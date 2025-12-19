@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="800" viewBox="0 0 1300 800">
+<defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.15"/>
+    </filter>
+    
+    <style>
+        /* FONTS */
+        text { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; fill: #212121; }
+        .title { font-weight: 800; font-size: 22px; fill: #ffffff; }
+        .subtitle { font-size: 14px; fill: #eceff1; }
+        .label { font-weight: 700; font-size: 14px; fill: #000; }
+        .detail { font-size: 11px; fill: #455a64; }
+        .model { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; font-weight: 600; fill: #0d47a1; }
+        .param { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #1565c0; }
+        
+        /* BOXES */
+        .box-main { fill: #e3f2fd; stroke: #1565c0; stroke-width: 3; filter: url(#shadow); rx: 12; }
+        .box-component { fill: #ffffff; stroke: #455a64; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        .box-input { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-depth { fill: #bbdefb; stroke: #1565c0; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-smpl { fill: #fce4ec; stroke: #c2185b; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-ply { fill: #fff3e0; stroke: #ef6c00; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-output { fill: #e0f2f1; stroke: #00695c; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        /* COMMON */
+        .arrow { stroke: #546e7a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+        .arrow-blue { stroke: #1565c0; stroke-width: 2; fill: none; marker-end: url(#arrowhead-blue); }
+        
+        .badge { fill: #263238; rx: 4; }
+        .badge-text { font-size: 9px; font-weight: 700; fill: #fff; font-family: 'Consolas', monospace; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#546e7a"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#1565c0"/>
+    </marker>
+</defs>
+
+<!-- HEADER -->
+<rect x="0" y="0" width="1300" height="70" fill="#1565c0"/>
+<text x="650" y="35" text-anchor="middle" class="title">3D FUSION</text>
+<text x="650" y="55" text-anchor="middle" class="subtitle">Depth + BBox + SMPL → Unified 3D Scene • 3ms Budget</text>
+
+<!-- MAIN CONTAINER -->
+<rect id="fusion_container" x="30" y="85" width="1240" height="670" class="box-main"/>
+
+<!-- INPUTS -->
+<g id="inputs" transform="translate(50, 110)">
+    <!-- Engine 1A -->
+    <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="180" height="100" class="box-input"/>
+        <text x="90" y="22" text-anchor="middle" class="label" fill="#2e7d32">ENGINE 1A (Depth)</text>
+        <text x="90" y="45" text-anchor="middle" class="model" style="fill:#2e7d32">depth_map</text>
+        <text x="90" y="62" text-anchor="middle" class="model" style="fill:#2e7d32">point_cloud</text>
+        <text x="90" y="79" text-anchor="middle" class="model" style="fill:#2e7d32">confidence_map</text>
+    </g>
+    
+    <!-- Engine 1B -->
+    <g transform="translate(0, 120)">
+        <rect x="0" y="0" width="180" height="100" class="box-input"/>
+        <text x="90" y="22" text-anchor="middle" class="label" fill="#2e7d32">ENGINE 1B (Semantic)</text>
+        <text x="90" y="45" text-anchor="middle" class="model" style="fill:#2e7d32">detections[]</text>
+        <text x="90" y="62" text-anchor="middle" class="param">bbox2D, category</text>
+        <text x="90" y="79" text-anchor="middle" class="param">smpl_params, ply_id</text>
+    </g>
+    
+    <!-- Layer 1 -->
+    <g transform="translate(0, 240)">
+        <rect x="0" y="0" width="180" height="80" class="box-input"/>
+        <text x="90" y="22" text-anchor="middle" class="label" fill="#2e7d32">LAYER 1 (Calib)</text>
+        <text x="90" y="48" text-anchor="middle" class="model" style="fill:#2e7d32">intrinsics</text>
+        <text x="90" y="65" text-anchor="middle" class="param">focal, principal point</text>
+    </g>
+</g>
+
+<!-- ARROWS to fusion -->
+<line x1="230" y1="160" x2="280" y2="160" class="arrow-blue"/>
+<line x1="230" y1="280" x2="280" y2="280" class="arrow-blue"/>
+<line x1="230" y1="390" x2="250" y2="390" class="arrow"/>
+<path d="M 250 390 L 250 220 L 280 220" class="arrow" fill="none"/>
+
+<!-- DEPTH-TO-3D PROJECTOR -->
+<g id="comp_projector" transform="translate(280, 110)">
+    <rect x="0" y="0" width="260" height="200" class="box-depth"/>
+    <text x="130" y="25" text-anchor="middle" class="label" fill="#1565c0">DEPTH-TO-3D PROJECTOR</text>
+    
+    <g transform="translate(15, 45)">
+        <rect x="0" y="0" width="230" height="50" rx="4" fill="#fff" stroke="#1565c0"/>
+        <text x="115" y="18" text-anchor="middle" class="model">Project bbox2D → bbox3D</text>
+        <text x="115" y="35" text-anchor="middle" class="param">X = (x-px)*depth/fx</text>
+        <text x="115" y="48" text-anchor="middle" class="param">Y = (y-py)*depth/fy</text>
+    </g>
+    
+    <g transform="translate(15, 110)">
+        <rect x="0" y="0" width="230" height="50" rx="4" fill="#e3f2fd" stroke="#1565c0"/>
+        <text x="115" y="20" text-anchor="middle" class="model">Dimension Estimation</text>
+        <text x="115" y="38" text-anchor="middle" class="param">width, height from bbox + depth</text>
+    </g>
+    
+    <rect x="90" y="175" width="80" height="18" class="badge"/>
+    <text x="130" y="188" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+
+<!-- SMPL PLACER -->
+<g id="comp_smpl" transform="translate(280, 340)">
+    <rect x="0" y="0" width="260" height="150" class="box-smpl"/>
+    <text x="130" y="25" text-anchor="middle" class="label" fill="#c2185b">SMPL PLACER</text>
+    <text x="130" y="42" text-anchor="middle" class="param">PERSON only</text>
+    
+    <g transform="translate(15, 55)">
+        <rect x="0" y="0" width="230" height="55" rx="4" fill="#fff" stroke="#c2185b"/>
+        <text x="115" y="18" text-anchor="middle" class="model" style="fill:#c2185b">smpl_model.forward()</text>
+        <text x="115" y="35" text-anchor="middle" class="param">vertices → world position</text>
+        <text x="115" y="50" text-anchor="middle" class="param">6890 vertices mesh</text>
+    </g>
+    
+    <rect x="90" y="125" width="80" height="18" class="badge"/>
+    <text x="130" y="138" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+
+<!-- PLY ALIGNER -->
+<g id="comp_ply" transform="translate(580, 110)">
+    <rect x="0" y="0" width="260" height="150" class="box-ply"/>
+    <text x="130" y="25" text-anchor="middle" class="label" fill="#ef6c00">PLY ALIGNER</text>
+    <text x="130" y="42" text-anchor="middle" class="param">KNOWN objects</text>
+    
+    <g transform="translate(15, 55)">
+        <rect x="0" y="0" width="230" height="55" rx="4" fill="#fff" stroke="#ef6c00"/>
+        <text x="115" y="18" text-anchor="middle" class="model" style="fill:#ef6c00">Load PLY template</text>
+        <text x="115" y="35" text-anchor="middle" class="param">Scale to bbox3D dimensions</text>
+        <text x="115" y="50" text-anchor="middle" class="param">Translate to center</text>
+    </g>
+    
+    <rect x="90" y="125" width="80" height="18" class="badge"/>
+    <text x="130" y="138" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+
+<!-- POINT CLOUD SEGMENTER -->
+<g id="comp_segment" transform="translate(580, 290)">
+    <rect x="0" y="0" width="260" height="130" class="box-depth"/>
+    <text x="130" y="25" text-anchor="middle" class="label" fill="#1565c0">POINT CLOUD SEGMENTER</text>
+    
+    <g transform="translate(15, 45)">
+        <rect x="0" y="0" width="230" height="50" rx="4" fill="#fff" stroke="#1565c0"/>
+        <text x="115" y="18" text-anchor="middle" class="model">points_in_bbox()</text>
+        <text x="115" y="35" text-anchor="middle" class="param">Filter points per object</text>
+    </g>
+    
+    <rect x="90" y="105" width="80" height="18" class="badge"/>
+    <text x="130" y="118" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+
+<!-- TEMPORAL SMOOTHER -->
+<g id="comp_smooth" transform="translate(580, 450)">
+    <rect x="0" y="0" width="260" height="120" class="box-component"/>
+    <text x="130" y="25" text-anchor="middle" class="label">TEMPORAL SMOOTHER</text>
+    
+    <g transform="translate(15, 45)">
+        <rect x="0" y="0" width="230" height="40" rx="4" fill="#e8eaf6" stroke="#3f51b5"/>
+        <text x="115" y="18" text-anchor="middle" class="model" style="fill:#3f51b5">EMA α=0.7</text>
+        <text x="115" y="33" text-anchor="middle" class="param">Smooth positions across frames</text>
+    </g>
+    
+    <rect x="90" y="95" width="80" height="18" class="badge"/>
+    <text x="130" y="108" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+
+<!-- ARROWS between components -->
+<path d="M 540 210 L 580 210" class="arrow"/>
+<path d="M 540 410 L 560 410 L 560 355 L 580 355" class="arrow"/>
+<path d="M 840 185 L 870 185 L 870 355 L 900 355" class="arrow-blue"/>
+<path d="M 840 355 L 900 355" class="arrow-blue"/>
+<path d="M 840 510 L 870 510 L 870 355 L 900 355" class="arrow"/>
+
+<!-- SCENE BUILDER -->
+<g id="comp_scene" transform="translate(900, 200)">
+    <rect x="0" y="0" width="280" height="310" class="box-output"/>
+    <text x="140" y="25" text-anchor="middle" class="label" fill="#00695c">SCENE 3D OUTPUT</text>
+    
+    <g transform="translate(15, 50)">
+        <rect x="0" y="0" width="250" height="45" rx="4" fill="#fff" stroke="#00695c"/>
+        <text x="125" y="18" text-anchor="middle" class="model" style="fill:#00695c">objects_3d[]</text>
+        <text x="125" y="35" text-anchor="middle" class="param">position, bbox3D, velocity</text>
+    </g>
+    
+    <g transform="translate(15, 110)">
+        <rect x="0" y="0" width="250" height="45" rx="4" fill="#fff" stroke="#00695c"/>
+        <text x="125" y="18" text-anchor="middle" class="model" style="fill:#00695c">fused_tracks[]</text>
+        <text x="125" y="35" text-anchor="middle" class="param">track_id + 3D data</text>
+    </g>
+    
+    <g transform="translate(15, 170)">
+        <rect x="0" y="0" width="250" height="45" rx="4" fill="#fff" stroke="#00695c"/>
+        <text x="125" y="18" text-anchor="middle" class="model" style="fill:#00695c">scene_3d</text>
+        <text x="125" y="35" text-anchor="middle" class="param">Unified scene representation</text>
+    </g>
+    
+    <text x="140" y="240" text-anchor="middle" class="label" style="font-size:11px" fill="#00695c">TO:</text>
+    <text x="140" y="260" text-anchor="middle" class="param">Engine 2 (track update)</text>
+    <text x="140" y="278" text-anchor="middle" class="param">Engine 3 (prediction)</text>
+    
+    <rect x="100" y="290" width="80" height="14" class="badge"/>
+    <text x="140" y="301" text-anchor="middle" class="badge-text">TOTAL: 3 ms</text>
+</g>
+
+<!-- LEGEND -->
+<g transform="translate(50, 680)">
+    <text x="0" y="15" class="label">COMPONENTS:</text>
+    <rect x="120" y="3" width="18" height="18" class="box-input"/>
+    <text x="145" y="17" class="detail">Input</text>
+    <rect x="195" y="3" width="18" height="18" class="box-depth"/>
+    <text x="220" y="17" class="detail">Depth</text>
+    <rect x="270" y="3" width="18" height="18" class="box-smpl"/>
+    <text x="295" y="17" class="detail">SMPL</text>
+    <rect x="345" y="3" width="18" height="18" class="box-ply"/>
+    <text x="370" y="17" class="detail">PLY</text>
+    <rect x="405" y="3" width="18" height="18" class="box-output"/>
+    <text x="430" y="17" class="detail">Output</text>
+</g>
+
+<!-- CATEGORY LEGEND -->
+<g transform="translate(500, 680)">
+    <text x="0" y="15" class="label">REPRESENTATION:</text>
+    <text x="140" y="15" class="param" style="fill:#c2185b">PERSON → SMPL (6890 vertices)</text>
+    <text x="340" y="15" class="param" style="fill:#ef6c00">KNOWN → PLY wireframe</text>
+    <text x="540" y="15" class="param">UNKNOWN → BBox3D only</text>
+</g>
+
+</svg>

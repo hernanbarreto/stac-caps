@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="4000" viewBox="0 0 2000 4000">
+<defs>
+    <!-- GLOBAL FILTERS -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.15"/>
+    </filter>
+
+    <!-- MARKERS -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#455a64"/>
+    </marker>
+    <marker id="arrowhead-crit" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#b71c1c"/>
+    </marker>
+
+    <style>
+        /* GLOBAL TYPOGRAPHY */
+        text { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-anchor: middle; fill: #212121; }
+        .title { font-weight: 800; font-size: 18px; fill: #263238; } 
+        .section-title { font-weight: 900; font-size: 24px; fill: #263238; letter-spacing: 0.5px; }
+        .white-title { font-weight: 800; font-size: 22px; fill: #ffffff; }
+        
+        /* DATA / CODE TEXT */
+        .tag { font-family: 'Consolas', 'Courier New', monospace; font-size: 11px; font-weight: bold; fill: #d84315; }
+        .model { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; font-weight: 600; fill: #0277bd; }
+        .param { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #455a64; }
+        .note { font-size: 11px; font-style: italic; fill: #616161; }
+        .critical-text { font-family: 'Consolas', 'Courier New', monospace; font-size: 12px; font-weight: bold; fill: #b71c1c; }
+        .status-text { font-size: 13px; font-weight: 600; fill: #ffffff; letter-spacing: 0.5px; }
+
+        /* CONTAINERS + LAYERS */
+        .sensor-layer{fill:#e3f2fd;stroke:#1565c0;stroke-width:3;filter:url(#shadow)}
+        .calib-layer{fill:#fffde7;stroke:#fbc02d;stroke-width:3;filter:url(#shadow)}
+        .engine-layer{fill:#fff3e0;stroke:#ef6c00;stroke-width:3;filter:url(#shadow)}
+        .meta-layer{fill:#f3e5f5;stroke:#7b1fa2;stroke-width:3;filter:url(#shadow)}
+        .federated-layer{fill:#e0f2f1;stroke:#00695c;stroke-width:3;filter:url(#shadow)}
+        .safety-layer{fill:#ffebee;stroke:#c62828;stroke-width:5;filter:url(#shadow)}
+        .output-layer{fill:#eceff1;stroke:#455a64;stroke-width:3;filter:url(#shadow)}
+        .state-manager{fill:#263238;stroke:#4caf50;stroke-width:4;filter:url(#shadow)}
+        
+        /* INNER COMPONENTS */
+        .comp-box { fill: #ffffff; stroke-width: 2; }
+    </style>
+</defs>
+
+<!-- BACKGROUND & HEADER -->
+<rect x="0" y="0" width="2000" height="140" fill="#1a237e"/>
+<text x="1000" y="55" style="fill:#fff;font-size:36px;font-weight:bold">STAC-CAPS v3.3 (Platform-Ready)</text>
+<text x="1000" y="90" style="fill:#90caf9;font-size:16px">Monocular Vision • Health • Multi-Node Scale • Hardwire Safety</text>
+
+<!-- SYSTEM STATUS -->
+<g id="comp_health_manager" transform="translate(100, 160)">
+    <rect x="0" y="0" width="1800" height="150" rx="12" class="state-manager"/>
+    <text x="900" y="35" class="title" style="fill:#4caf50;font-size:22px">SYSTEM HEALTH MANAGER</text>
+    <g transform="translate(200, 70)">
+        <rect x="0" y="0" width="300" height="50" fill="#4caf50" stroke="#fff" rx="5"/>
+        <text x="150" y="30" class="status-text">SIGNAL STABLE</text>
+    </g>
+    <g transform="translate(750, 70)">
+        <rect x="0" y="0" width="300" height="50" fill="#f57c00" stroke="#fff" rx="5"/>
+        <text x="150" y="30" class="status-text">OCCLUSION MODE</text>
+    </g>
+    <g transform="translate(1300, 70)">
+        <rect x="0" y="0" width="300" height="50" fill="#d32f2f" stroke="#fff" rx="5"/>
+        <text x="150" y="30" class="status-text">VISUAL VETO</text>
+    </g>
+</g>
+
+<!-- LAYER 0: SENSORS (MONOCULAR ONLY) -->
+<g id="layer_0_sensor_input" transform="translate(100, 350)">
+    <rect x="0" y="0" width="1800" height="300" rx="15" class="sensor-layer"/>
+    <text x="900" y="35" class="title">0. SENSOR INPUT: MONOCULAR RGB SUITE</text>
+    
+    <g id="comp_primary_optical" transform="translate(50, 70)">
+        <rect x="0" y="0" width="500" height="180" fill="#fff" stroke="#1565c0" stroke-width="2" rx="5"/>
+        <text x="250" y="30" class="title" style="font-size:15px">PRIMARY OPTICAL FEED</text>
+        <text x="250" y="60" class="model">Industrial IP Camera (IMX490)</text>
+        <text x="250" y="80" class="param">HDR 120dB • 1080p @ 60fps</text>
+        <rect x="50" y="120" width="400" height="40" fill="#e3f2fd" stroke="#1565c0"/>
+        <text x="250" y="145" class="tag">ISP: Tone Mapping &amp; Denoise</text>
+    </g>
+
+    <g id="comp_secondary_optical" transform="translate(600, 70)">
+        <rect x="0" y="0" width="500" height="180" fill="#fff" stroke="#1565c0" stroke-width="2" rx="5"/>
+        <text x="250" y="30" class="title" style="font-size:15px">SECONDARY OPTICAL FEED</text>
+        <text x="250" y="60" class="model">Telephoto / Zoom Lens</text>
+        <text x="250" y="80" class="param">Long-range Detection &gt; 200m</text>
+        <text x="250" y="140" class="critical-text">NO ACTIVE SENSORS (RADAR REMOVED)</text>
+    </g>
+
+    <g id="comp_health_monitor" transform="translate(1150, 70)">
+        <rect x="0" y="0" width="600" height="180" fill="#ffebee" stroke="#b71c1c" stroke-width="2" rx="5"/>
+        <text x="300" y="30" class="title" style="font-size:15px">HARDWARE HEALTH MONITOR</text>
+        <text x="300" y="60" class="model">Thermal &amp; Voltage Watchdog</text>
+        <text x="300" y="90" class="param">FPS Jitter Analyzer (&lt; 5ms)</text>
+        <text x="300" y="120" class="note">Detects Lens Dirt/Fog/Blockage</text>
+        <text x="300" y="150" class="critical-text">Triggers "System Fault" if degraded</text>
+    </g>
+</g>
+
+<!-- LAYER 1: CALIBRATION (RAIL + LANDMARKS) -->
+<g id="layer_1_calibration" transform="translate(100, 700)">
+    <rect x="0" y="0" width="1800" height="400" rx="15" class="calib-layer"/>
+    <text x="900" y="35" class="title">1. ADAPTIVE CALIBRATION &amp; LOCALIZATION</text>
+
+    <!-- STEP 1: HUMAN INIT -->
+    <g id="comp_hard_init" transform="translate(100, 70)">
+        <rect x="0" y="0" width="450" height="280" fill="#fff" stroke="#f57f17" stroke-width="2" rx="5"/>
+        <text x="225" y="30" class="title" style="font-size:14px">STAGE 1: HARD INITIALIZATION</text>
+        <text x="225" y="60" class="tag">Human-in-the-Loop</text>
+        <text x="225" y="90" class="note">Operator selects Rail Heads manually</text>
+        <text x="225" y="120" class="model">Ground Truth Scale = 1435mm</text>
+        <text x="225" y="150" class="param">Establishes WorldFrame To CameraFrame</text>
+        <rect x="50" y="180" width="350" height="60" fill="#fffde7" stroke="#fbc02d"/>
+        <text x="225" y="215" class="critical-text">METRIC SCALE LOCKED</text>
+    </g>
+
+    <!-- STEP 2: LANDMARK LEARNING -->
+    <g id="comp_landmark_learning" transform="translate(675, 70)">
+        <rect x="0" y="0" width="450" height="280" fill="#fff" stroke="#f57f17" stroke-width="2" rx="5"/>
+        <text x="225" y="30" class="title" style="font-size:14px">STAGE 2: ONLINE LEARNING</text>
+        <text x="225" y="60" class="tag">Static Landmark Discovery</text>
+        <text x="225" y="90" class="model">Feature Matching (SuperPoint)</text>
+        <text x="225" y="120" class="note">Maps Background Features to Metrics</text>
+        <rect x="50" y="150" width="350" height="80" fill="#e0f2f1" stroke="#00695c"/>
+        <text x="225" y="175" class="note">"If I see this pole, I know"</text>
+        <text x="225" y="195" class="note">"Distance is X meters"</text>
+    </g>
+
+    <!-- STEP 3: FALLBACK -->
+    <g id="comp_fallback_handler" transform="translate(1250, 70)">
+        <rect x="0" y="0" width="450" height="280" fill="#fff" stroke="#d32f2f" stroke-width="2" rx="5"/>
+        <text x="225" y="30" class="title" style="font-size:14px">STAGE 3: ROBUST FALLBACK</text>
+        <rect x="40" y="50" width="370" height="200" fill="#ffebee" stroke="#b71c1c"/>
+        <text x="225" y="80" class="critical-text">OCCLUSION HANDLER</text>
+        <text x="225" y="110" class="param">IF Rails Hidden (e.g. by Train):</text>
+        <text x="225" y="140" class="tag">SWITCH -> Landmark Calibration</text>
+        <text x="225" y="170" class="model">Maintenance of 6DoF Pose</text>
+        <text x="225" y="200" class="note">Zero Drift during event</text>
+        <text x="225" y="230" class="status-text" style="fill:#b71c1c">CONTINUOUS OPERATION</text>
+    </g>
+</g>
+
+<!-- STAC CORE TRINITY -->
+<g id="layer_2_cognitive_trinity" transform="translate(100, 1150)">
+    <rect x="0" y="0" width="1800" height="1350" rx="15" class="engine-layer"/>
+    <text x="900" y="40" class="title" style="font-size:24px">STAC COGNITIVE TRINITY (Vision-Only)</text>
+
+    <!-- ENGINE 1: VOLUMETRIC -->
+    <g id="block_engine_1" transform="translate(50, 80)">
+        <rect x="0" y="0" width="1700" height="350" fill="#fff" stroke="#ef6c00" stroke-width="2" rx="5"/>
+        <text x="850" y="30" class="title">ENGINE 1: VOLUMETRIC &amp; SEMANTIC PERCEPTION</text>
+        
+        <g id="comp_engine_1a_depth" transform="translate(100, 60)">
+            <rect x="0" y="0" width="700" height="250" fill="#fff3e0" stroke="#ef6c00"/>
+            <text x="350" y="25" class="tag">ENGINE 1A: DEPTH (25ms)</text>
+            <text x="350" y="50" class="model">DepthAnything-v2 (TensorRT)</text>
+            <text x="350" y="75" class="param">+ Refinement Pipeline:</text>
+            <text x="350" y="95" class="note">• Outlier Detection (median)</text>
+            <text x="350" y="115" class="note">• Edge-aware Guided Filter</text>
+            <text x="350" y="135" class="note">• Temporal EMA (α=0.7)</text>
+            <text x="350" y="155" class="note">• 4-Factor Confidence Map</text>
+            <text x="350" y="180" class="critical-text">OUTPUT: depth_map + point_cloud</text>
+            <rect x="580" y="220" width="100" height="25" fill="#263238" rx="4"/>
+            <text x="630" y="238" class="status-text" style="font-size:11px">25 ms</text>
+        </g>
+        <g id="comp_engine_1b_semantic" transform="translate(900, 60)">
+            <rect x="0" y="0" width="700" height="250" fill="#e1f5fe" stroke="#0277bd"/>
+            <text x="350" y="25" class="tag">ENGINE 1B: SEMANTIC (25ms)</text>
+            <text x="350" y="50" class="model">RT-DETR-X (17ms) + 3-Category</text>
+            <text x="350" y="75" class="param">Classification:</text>
+            <text x="350" y="95" class="note">• PERSONAS: SMPL Avatar + bbox3D</text>
+            <text x="350" y="115" class="note">• OBJETOS CONOCIDOS: PLY wireframe</text>
+            <text x="350" y="135" class="note">• OBJETOS DESCONOCIDOS: bbox3D only</text>
+            <text x="350" y="160" class="note">+ Async SAM-3D trigger (external)</text>
+            <text x="350" y="185" class="critical-text">OUTPUT: detections[] + smpl_params</text>
+            <rect x="580" y="220" width="100" height="25" fill="#263238" rx="4"/>
+            <text x="630" y="238" class="status-text" style="font-size:11px">25 ms</text>
+        </g>
+    </g>
+
+    <!-- ENGINE 2: PERSISTENCE -->
+    <g id="block_engine_2" transform="translate(50, 480)">
+        <rect x="0" y="0" width="1700" height="350" fill="#fff" stroke="#c2185b" stroke-width="2" rx="5"/>
+        <text x="850" y="30" class="title">ENGINE 2: TEMPORAL PERSISTENCE (OBJECT PERMANENCE)</text>
+        
+        <g transform="translate(100, 60)">
+            <rect x="0" y="0" width="700" height="250" fill="#fce4ec" stroke="#c2185b"/>
+            <text x="350" y="25" class="tag">TRACKING CORE</text>
+            <text x="350" y="50" class="model">BotSORT + OSNet (EMA α=0.7)</text>
+            <text x="350" y="75" class="param">+ Kalman Filter (Adaptive Q)</text>
+            <text x="350" y="100" class="note">• LRU Cache (max 50 tracks)</text>
+            <text x="350" y="120" class="note">• quality_score per track</text>
+            <text x="350" y="145" class="note">Ghost state with prediction</text>
+            <text x="350" y="175" class="critical-text">OUTPUT: tracks[] + velocity</text>
+            <rect x="580" y="220" width="100" height="25" fill="#263238" rx="4"/>
+            <text x="630" y="238" class="status-text" style="font-size:11px">5 ms</text>
+        </g>
+        <g transform="translate(900, 60)">
+            <rect x="0" y="0" width="700" height="250" fill="#fff" stroke="#880e4f" stroke-dasharray="3 3"/>
+            <text x="350" y="25" class="tag">OCCLUSION HANDLING</text>
+            <text x="350" y="55" class="param">IF Object Hidden:</text>
+            <text x="350" y="80" class="note">→ Keep Alive (Ghost State)</text>
+            <text x="350" y="105" class="note">→ Propagate via Kalman</text>
+            <text x="350" y="130" class="note">→ Track age_frames++</text>
+            <text x="350" y="160" class="critical-text">MAX_GHOST_FRAMES: 10</text>
+        </g>
+    </g>
+
+    <!-- ENGINE 3: PREDICTION -->
+    <g id="block_engine_3" transform="translate(50, 880)">
+        <rect x="0" y="0" width="1700" height="350" fill="#fff" stroke="#00695c" stroke-width="2" rx="5"/>
+        <text x="850" y="30" class="title">ENGINE 3: BEHAVIOR PREDICTION</text>
+        
+        <g transform="translate(100, 60)">
+            <rect x="0" y="0" width="700" height="250" fill="#e0f2f1" stroke="#00695c"/>
+            <text x="350" y="25" class="tag">TRAJECTORY + TTC</text>
+            <text x="350" y="50" class="model">Kinematic: x + v×t + ½a×t²</text>
+            <text x="350" y="75" class="param">+ SMPL Pose Velocity</text>
+            <text x="350" y="100" class="note">3 scenarios: optimistic/nominal/pessimistic</text>
+            <text x="350" y="125" class="note">TTC with Confidence Intervals</text>
+            <text x="350" y="150" class="note">+ Early Exit (&lt;1s)</text>
+            <text x="350" y="180" class="critical-text">OUTPUT: ttc_result + predictions</text>
+            <rect x="580" y="220" width="100" height="25" fill="#263238" rx="4"/>
+            <text x="630" y="238" class="status-text" style="font-size:11px">3 ms</text>
+        </g>
+        <g transform="translate(900, 60)">
+            <rect x="0" y="0" width="700" height="250" fill="#e0f2f1" stroke="#00695c"/>
+            <text x="350" y="25" class="tag">THEORY OF MIND</text>
+            <text x="350" y="50" class="model">Bayesian + Context Priors</text>
+            <text x="350" y="75" class="param">+ Temporal EMA (α=0.7)</text>
+            <text x="350" y="100" class="note">Intent: STATIC/CROSSING/etc.</text>
+            <text x="350" y="125" class="note">Distraction: head, arms, gait</text>
+            <text x="350" y="150" class="note">+ Cross-Validation (Optical Flow)</text>
+            <text x="350" y="180" class="critical-text">OUTPUT: risk_scores + safety_margin</text>
+        </g>
+    </g>
+</g>
+
+<!-- LAYER 4: META & FEDERATED (SUPPORT) -->
+<g id="layer_4_meta_cognition" transform="translate(100, 2550)">
+    <rect x="0" y="0" width="1800" height="300" rx="15" class="federated-layer"/>
+    <text x="900" y="35" class="title">4. META-COGNITION &amp; FEDERATED PRIVACY</text>
+    
+    <g transform="translate(100, 60)">
+        <rect x="0" y="0" width="1600" height="200" fill="#e0f2f1" stroke="#004d40" stroke-width="2" rx="10"/>
+        
+        <g transform="translate(50, 20)">
+            <text x="200" y="30" class="tag">FEDERATED ORCHESTRATION</text>
+            <text x="200" y="60" class="model">Multi-Camera Fleet Sync</text>
+            <text x="200" y="90" class="param">Distributed Learning Updates</text>
+            <text x="200" y="120" class="note">Scales to N-Nodes</text>
+        </g>
+        
+        <g transform="translate(533, 20)">
+            <text x="200" y="30" class="tag">SAFETY GOVERNANCE</text>
+            <text x="200" y="60" class="model">Traceability &amp; Audit</text>
+            <text x="200" y="90" class="param">Fail-Safe / Fail-Operational</text>
+            <text x="200" y="120" class="note">ISO 26262 Alignment Hook</text>
+        </g>
+        
+        <g transform="translate(1066, 20)">
+            <text x="200" y="30" class="tag">PRIVACY &amp; SECURITY</text>
+            <text x="200" y="60" class="model">Byzantine Tolerant Aggregator</text>
+            <text x="200" y="90" class="tag">On-Chip Anonymization</text>
+            <text x="200" y="120" class="note">GDPR Compliant Streams</text>
+        </g>
+    </g>
+</g>
+
+<!-- LAYER 5: SAFETY ENVELOPE (CAPS VETO) -->
+<g id="layer_5_safety_envelope" transform="translate(100, 2900)">
+    <rect x="0" y="0" width="1800" height="400" rx="15" class="safety-layer"/>
+    <text x="900" y="35" class="title" style="fill:#b71c1c;font-size:22px">5. SAFETY VETO (7ms)</text>
+    
+    <rect x="50" y="70" width="1700" height="280" fill="#ffebee" stroke="#b71c1c" stroke-width="3" rx="5"/>
+    <text x="850" y="100" class="critical-text" style="font-size:18px">CAPS: COLLISION ALERT &amp; PREDICTION SYSTEM</text>
+    
+    <g id="comp_visual_veto" transform="translate(100, 130)">
+        <rect x="0" y="0" width="700" height="180" fill="#fff" stroke="#b71c1c"/>
+        <text x="350" y="25" class="tag">TTC EVALUATOR + DECISION ENGINE</text>
+        <text x="350" y="50" class="param">UNCERTAIN → use TTC.min (conservative)</text>
+        <text x="350" y="75" class="note">Risk Aggregation: max(risk_scores)</text>
+        <text x="350" y="100" class="note">Critical count threshold: 3</text>
+        <text x="350" y="125" class="note">Hardwire GPIO Bypass (&lt;0.5ms)</text>
+        <text x="350" y="155" class="critical-text">ISO 26262 Compliant</text>
+    </g>
+
+    <g id="comp_hard_triggers" transform="translate(900, 130)">
+        <rect x="0" y="0" width="700" height="180" fill="#b71c1c" stroke="#fff"/>
+        <text x="350" y="35" class="status-text" style="font-size:18px">HARD OUTPUT TRIGGERS</text>
+        <text x="350" y="70" class="status-text">TTC &lt; 1.0s → EMERGENCY BRAKE (GPIO)</text>
+        <text x="350" y="100" class="status-text">TTC &lt; 3.0s → WARNING + PREPARE</text>
+        <text x="350" y="130" class="status-text">TTC &lt; 5.0s → CAUTION</text>
+        <text x="350" y="160" class="status-text">&gt; 5.0s → CLEAR (normal operation)</text>
+    </g>
+</g>
+
+<!-- LAYER 6: CAPS OUTPUT -->
+<g id="layer_6_output" transform="translate(100, 3350)">
+    <rect x="0" y="0" width="1800" height="200" rx="15" class="output-layer"/>
+    <text x="900" y="35" class="title">6. CAPS OUTPUT INTERFACE</text>
+    
+    <g id="comp_protocols" transform="translate(50, 60)">
+        <rect x="0" y="0" width="800" height="100" fill="#fff" stroke="#455a64"/>
+        <text x="400" y="30" class="tag">Standard Protocols</text>
+        <text x="400" y="60" class="model">MQTT / REST / SCADA Integration</text>
+        <text x="400" y="85" class="note">Delivers: Heatmaps, Alerts, System Health</text>
+    </g>
+
+    <g id="comp_xai_audit" transform="translate(900, 60)">
+        <rect x="0" y="0" width="850" height="100" fill="#fff" stroke="#1a237e" stroke-width="2"/>
+        <text x="425" y="30" class="tag">XAI &amp; Audit Trail</text>
+        <text x="425" y="60" class="model">Explainable Decisions</text>
+        <text x="425" y="85" class="param">Heatmaps ("Why?") + Event Logs</text>
+        <text x="425" y="115" class="critical-text">LATENCY &lt; 100ms (WORST CASE)</text>
+    </g>
+</g>
+
+</svg>

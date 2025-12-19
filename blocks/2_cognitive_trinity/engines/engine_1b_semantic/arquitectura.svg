@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000">
+<defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.15"/>
+    </filter>
+
+    <style>
+        /* FONTS */
+        text { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; fill: #212121; }
+        .title { font-weight: 800; font-size: 22px; fill: #ffffff; }
+        .subtitle { font-size: 14px; fill: #eceff1; }
+        .label { font-weight: 700; font-size: 14px; fill: #000; }
+        .detail { font-size: 11px; fill: #455a64; }
+        .model { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; font-weight: 600; fill: #0d47a1; }
+        .param { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #1565c0; }
+        
+        /* BOXES */
+        .box-main { fill: #fff3e0; stroke: #ef6c00; stroke-width: 3; filter: url(#shadow); rx: 12; }
+        .box-component { fill: #ffffff; stroke: #455a64; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        .box-detection { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-person { fill: #fff8e1; stroke: #ef6c00; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-known { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-unknown { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        /* COMMON */
+        .arrow { stroke: #546e7a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+        .arrow-blue { stroke: #1565c0; stroke-width: 2; fill: none; marker-end: url(#arrowhead-blue); }
+        .arrow-green { stroke: #2e7d32; stroke-width: 2; fill: none; marker-end: url(#arrowhead-green); }
+        .arrow-purple { stroke: #7b1fa2; stroke-width: 2; stroke-dasharray: 5,3; fill: none; marker-end: url(#arrowhead-purple); }
+        
+        .badge { fill: #263238; rx: 4; }
+        .badge-text { font-size: 9px; font-weight: 700; fill: #fff; font-family: 'Consolas', monospace; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#546e7a"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#1565c0"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#7b1fa2"/>
+    </marker>
+</defs>
+
+<!-- HEADER -->
+<rect x="0" y="0" width="1400" height="70" fill="#1565c0"/>
+<text x="700" y="35" text-anchor="middle" class="title">ENGINE 1B: SEMANTIC + OBJECT 3D</text>
+<text x="700" y="55" text-anchor="middle" class="subtitle">Unified Classification: Personas (SMPL) • Objetos Conocidos (PLY) • Objetos Desconocidos (bbox3D) • 25ms Budget</text>
+
+<!-- MAIN CONTAINER -->
+<rect id="engine_1b_container" x="30" y="85" width="1340" height="880" class="box-main"/>
+
+<!-- INPUT -->
+<g id="comp_input" transform="translate(50, 110)">
+    <rect x="0" y="0" width="150" height="90" class="box-component"/>
+    <text x="75" y="22" text-anchor="middle" class="label">INPUT</text>
+    <text x="75" y="42" text-anchor="middle" class="model">Frame + Depth</text>
+    <text x="75" y="58" text-anchor="middle" class="param">1080×1920</text>
+    <rect x="35" y="70" width="80" height="14" class="badge"/>
+    <text x="75" y="80" text-anchor="middle" class="badge-text">GPU Tensor</text>
+</g>
+
+<!-- ARROW: Input to Detection -->
+<line x1="200" y1="155" x2="260" y2="155" class="arrow-blue"/>
+
+<!-- RT-DETR-X -->
+<g id="comp_rt_detr_x" transform="translate(260, 100)">
+    <rect x="0" y="0" width="280" height="200" class="box-detection"/>
+    <text x="140" y="22" text-anchor="middle" class="label" fill="#1565c0">RT-DETR-X</text>
+    <text x="140" y="38" text-anchor="middle" class="detail">Object Detection (All Classes)</text>
+    
+    <g transform="translate(15, 50)">
+        <rect x="0" y="0" width="115" height="45" rx="4" fill="#bbdefb" stroke="#1976d2"/>
+        <text x="57" y="18" text-anchor="middle" class="model">ResNet-50</text>
+        <text x="57" y="32" text-anchor="middle" class="param">Backbone</text>
+    </g>
+    <g transform="translate(145, 50)">
+        <rect x="0" y="0" width="120" height="45" rx="4" fill="#bbdefb" stroke="#1976d2"/>
+        <text x="60" y="18" text-anchor="middle" class="model">Transformer</text>
+        <text x="60" y="32" text-anchor="middle" class="param">Decoder</text>
+    </g>
+    
+    <g transform="translate(15, 105)">
+        <rect x="0" y="0" width="250" height="40" rx="4" fill="#e3f2fd" stroke="#1976d2"/>
+        <text x="125" y="16" text-anchor="middle" class="model">OUTPUT: Detections[N]</text>
+        <text x="125" y="30" text-anchor="middle" class="param">{class_id, bbox, conf, features}</text>
+    </g>
+    
+    <g transform="translate(15, 155)">
+        <rect x="0" y="0" width="250" height="30" rx="4" fill="#fff" stroke="#1565c0"/>
+        <text x="125" y="18" text-anchor="middle" class="param">Classes: 0=person, 1=train, 2=car, ...</text>
+    </g>
+    
+    <rect x="100" y="185" width="80" height="14" class="badge"/>
+    <text x="140" y="196" text-anchor="middle" class="badge-text">17 ms</text>
+</g>
+
+<!-- ARROW: Detection to Classifier -->
+<line x1="540" y1="200" x2="600" y2="200" class="arrow"/>
+
+<!-- CLASSIFIER -->
+<g id="comp_classifier" transform="translate(600, 110)">
+    <rect x="0" y="0" width="180" height="180" rx="8" fill="#fff" stroke="#455a64" stroke-width="2" filter="url(#shadow)"/>
+    <text x="90" y="22" text-anchor="middle" class="label">CLASSIFIER</text>
+    
+    <polygon points="90,45 150,80 90,115 30,80" fill="#fff8e1" stroke="#f57f17" stroke-width="2"/>
+    <text x="90" y="78" text-anchor="middle" class="detail" font-weight="600">class_id?</text>
+    
+    <!-- Branch labels -->
+    <text x="30" y="130" text-anchor="middle" class="param" fill="#ef6c00">0</text>
+    <text x="90" y="140" text-anchor="middle" class="param" fill="#2e7d32">1-50</text>
+    <text x="150" y="130" text-anchor="middle" class="param" fill="#7b1fa2">>50</text>
+    
+    <text x="30" y="150" text-anchor="middle" class="detail" font-weight="600" fill="#ef6c00">PERSON</text>
+    <text x="90" y="160" text-anchor="middle" class="detail" font-weight="600" fill="#2e7d32">KNOWN</text>
+    <text x="150" y="150" text-anchor="middle" class="detail" font-weight="600" fill="#7b1fa2">UNKNOWN</text>
+    
+    <rect x="50" y="165" width="80" height="12" class="badge"/>
+    <text x="90" y="174" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+
+<!-- BRANCH 1: PERSONAS (Left) -->
+<path d="M 630 290 L 630 340 L 250 340 L 250 380" class="arrow" style="stroke:#ef6c00" marker-end="url(#arrowhead)"/>
+
+<g id="comp_person_branch" transform="translate(50, 380)">
+    <rect x="0" y="0" width="400" height="260" class="box-person"/>
+    <text x="200" y="25" text-anchor="middle" class="label" fill="#ef6c00">PERSONA (class_id = 0)</text>
+    
+    <!-- RTMPose -->
+    <g transform="translate(20, 45)">
+        <rect x="0" y="0" width="170" height="80" rx="4" fill="#ffe0b2" stroke="#ef6c00"/>
+        <text x="85" y="20" text-anchor="middle" class="model">RTMPose-T</text>
+        <text x="85" y="38" text-anchor="middle" class="param">CSPNeXt-Tiny</text>
+        <text x="85" y="52" text-anchor="middle" class="param">17 keypoints</text>
+        <rect x="45" y="60" width="80" height="14" class="badge"/>
+        <text x="85" y="71" text-anchor="middle" class="badge-text">5 ms</text>
+    </g>
+    
+    <!-- Avatar Cache -->
+    <g transform="translate(210, 45)">
+        <rect x="0" y="0" width="170" height="80" rx="4" fill="#fff" stroke="#e65100"/>
+        <text x="85" y="20" text-anchor="middle" class="model">Avatar Cache</text>
+        <text x="85" y="38" text-anchor="middle" class="param">Dict[tid → SMPL]</text>
+        <text x="85" y="52" text-anchor="middle" class="param">Persistent</text>
+        <rect x="45" y="60" width="80" height="14" class="badge"/>
+        <text x="85" y="71" text-anchor="middle" class="badge-text">3 ms</text>
+    </g>
+    
+    <!-- Output -->
+    <g transform="translate(20, 140)">
+        <rect x="0" y="0" width="360" height="60" rx="4" fill="#fff" stroke="#ef6c00" stroke-width="2"/>
+        <text x="180" y="18" text-anchor="middle" class="label" fill="#e65100">SMPL Avatar + bbox3D</text>
+        <text x="180" y="38" text-anchor="middle" class="param">β[10] + θ[72] + t[3] = 85 floats</text>
+        <text x="180" y="52" text-anchor="middle" class="param">+ bbox3D (center, dim, orient)</text>
+    </g>
+    
+    <!-- Privacy badge -->
+    <rect x="130" y="210" width="140" height="18" rx="3" fill="#2e7d32"/>
+    <text x="200" y="222" text-anchor="middle" class="badge-text">🔒 GDPR Compliant</text>
+    
+    <rect x="130" y="235" width="140" height="18" rx="3" class="badge"/>
+    <text x="200" y="247" text-anchor="middle" class="badge-text">Total: 8 ms</text>
+</g>
+
+<!-- BRANCH 2: OBJETOS CONOCIDOS (Center) -->
+<path d="M 690 290 L 690 340 L 700 340 L 700 380" class="arrow" style="stroke:#2e7d32" marker-end="url(#arrowhead)"/>
+
+<g id="comp_known_branch" transform="translate(500, 380)">
+    <rect x="0" y="0" width="400" height="260" class="box-known"/>
+    <text x="200" y="25" text-anchor="middle" class="label" fill="#2e7d32">OBJETO CONOCIDO (class_id 1-50)</text>
+    
+    <!-- PLY Library -->
+    <g transform="translate(20, 45)">
+        <rect x="0" y="0" width="170" height="80" rx="4" fill="#c8e6c9" stroke="#2e7d32"/>
+        <text x="85" y="20" text-anchor="middle" class="model">PLY Library</text>
+        <text x="85" y="38" text-anchor="middle" class="param">~50 wireframes</text>
+        <text x="85" y="52" text-anchor="middle" class="param">O(1) lookup</text>
+        <rect x="45" y="60" width="80" height="14" class="badge"/>
+        <text x="85" y="71" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+    </g>
+    
+    <!-- Scale + Orient -->
+    <g transform="translate(210, 45)">
+        <rect x="0" y="0" width="170" height="80" rx="4" fill="#e8f5e9" stroke="#2e7d32"/>
+        <text x="85" y="20" text-anchor="middle" class="model">Transform</text>
+        <text x="85" y="38" text-anchor="middle" class="param">Scale to depth</text>
+        <text x="85" y="52" text-anchor="middle" class="param">Orient to scene</text>
+        <rect x="45" y="60" width="80" height="14" class="badge"/>
+        <text x="85" y="71" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+    </g>
+    
+    <!-- Output -->
+    <g transform="translate(20, 140)">
+        <rect x="0" y="0" width="360" height="60" rx="4" fill="#fff" stroke="#2e7d32" stroke-width="2"/>
+        <text x="180" y="18" text-anchor="middle" class="label" fill="#1b5e20">PLY Reference + bbox3D</text>
+        <text x="180" y="38" text-anchor="middle" class="param">ply_ref: "train_generic.ply"</text>
+        <text x="180" y="52" text-anchor="middle" class="param">+ bbox3D (from PLY bounds)</text>
+    </g>
+    
+    <!-- Example classes -->
+    <text x="200" y="220" text-anchor="middle" class="detail">train, car, truck, bus, barrier...</text>
+    
+    <rect x="130" y="235" width="140" height="18" rx="3" class="badge"/>
+    <text x="200" y="247" text-anchor="middle" class="badge-text">Total: &lt;1 ms</text>
+</g>
+
+<!-- BRANCH 3: OBJETOS DESCONOCIDOS (Right) -->
+<path d="M 750 290 L 750 340 L 1150 340 L 1150 380" class="arrow-purple"/>
+
+<g id="comp_unknown_branch" transform="translate(950, 380)">
+    <rect x="0" y="0" width="380" height="260" class="box-unknown"/>
+    <text x="190" y="25" text-anchor="middle" class="label" fill="#7b1fa2">OBJETO DESCONOCIDO (class_id >50)</text>
+    
+    <!-- Depth bbox -->
+    <g transform="translate(20, 45)">
+        <rect x="0" y="0" width="160" height="80" rx="4" fill="#e1bee7" stroke="#7b1fa2"/>
+        <text x="80" y="20" text-anchor="middle" class="model">Depth Projection</text>
+        <text x="80" y="38" text-anchor="middle" class="param">bbox2D + depth</text>
+        <text x="80" y="52" text-anchor="middle" class="param">→ bbox3D</text>
+        <rect x="40" y="60" width="80" height="14" class="badge"/>
+        <text x="80" y="71" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+    </g>
+    
+    <!-- Async Trigger -->
+    <g transform="translate(200, 45)">
+        <rect x="0" y="0" width="160" height="80" rx="4" fill="#f3e5f5" stroke="#7b1fa2" stroke-dasharray="4,2"/>
+        <text x="80" y="20" text-anchor="middle" class="model">Async Trigger</text>
+        <text x="80" y="38" text-anchor="middle" class="param">→ External PLY</text>
+        <text x="80" y="52" text-anchor="middle" class="param">Reconstruction</text>
+        <rect x="30" y="60" width="100" height="14" class="badge" style="fill:#7b1fa2"/>
+        <text x="80" y="71" text-anchor="middle" class="badge-text">Non-blocking</text>
+    </g>
+    
+    <!-- Output -->
+    <g transform="translate(20, 140)">
+        <rect x="0" y="0" width="340" height="60" rx="4" fill="#fff" stroke="#7b1fa2" stroke-width="2"/>
+        <text x="170" y="18" text-anchor="middle" class="label" fill="#4a148c">bbox3D only</text>
+        <text x="170" y="38" text-anchor="middle" class="param">(temporary until PLY generated)</text>
+        <text x="170" y="52" text-anchor="middle" class="param">+ UnknownTrigger message</text>
+    </g>
+    
+    <!-- Note -->
+    <rect x="30" y="210" width="320" height="40" rx="4" fill="#fce4ec" stroke="#c2185b"/>
+    <text x="190" y="228" text-anchor="middle" class="detail" fill="#880e4f">⚠️ PLY reconstruction runs on SEPARATE system</text>
+    <text x="190" y="242" text-anchor="middle" class="param" fill="#880e4f">Does NOT block RT loop</text>
+</g>
+
+<!-- MERGE TO OUTPUT -->
+<path d="M 250 640 L 250 680 L 700 700" class="arrow"/>
+<path d="M 700 640 L 700 700" class="arrow"/>
+<path d="M 1140 640 L 1140 680 L 700 700" class="arrow"/>
+
+<!-- UNIFIED OUTPUT -->
+<g id="comp_output" transform="translate(400, 700)">
+    <rect x="0" y="0" width="600" height="100" class="box-component" style="stroke:#1565c0;stroke-width:3"/>
+    <text x="300" y="25" text-anchor="middle" class="label" fill="#1565c0">UNIFIED OUTPUT</text>
+    <text x="300" y="50" text-anchor="middle" class="detail">Detection[] con category + bbox3D + (smpl | ply_ref | null)</text>
+    <text x="300" y="70" text-anchor="middle" class="param">All detections have bbox3D for TTC calculation</text>
+    <rect x="260" y="78" width="80" height="14" class="badge" style="fill:#1565c0"/>
+    <text x="300" y="89" text-anchor="middle" class="badge-text">To 3D Fusion</text>
+</g>
+
+<!-- EXTERNAL ASYNC (dashed box) -->
+<g id="comp_external" transform="translate(1050, 800)">
+    <rect x="0" y="0" width="280" height="120" rx="8" fill="#fff" stroke="#7b1fa2" stroke-width="2" stroke-dasharray="8,4"/>
+    <text x="140" y="22" text-anchor="middle" class="label" fill="#7b1fa2">EXTERNAL SERVICE</text>
+    <text x="140" y="45" text-anchor="middle" class="detail">SAM-3D-OBJECT</text>
+    <text x="140" y="65" text-anchor="middle" class="param">Generates sparse PLY</text>
+    <text x="140" y="85" text-anchor="middle" class="param">Adds to PLY Library</text>
+    <rect x="70" y="95" width="140" height="18" rx="3" fill="#7b1fa2"/>
+    <text x="140" y="108" text-anchor="middle" class="badge-text">5-30 sec (async)</text>
+</g>
+<path d="M 1210 530 L 1280 530 L 1280 800" class="arrow-purple" stroke-dasharray="5,5"/>
+
+<!-- LEGEND -->
+<g transform="translate(50, 860)">
+    <text x="0" y="15" class="label">CATEGORIES:</text>
+    <rect x="120" y="3" width="18" height="18" class="box-person"/>
+    <text x="145" y="17" class="detail">Persona (SMPL)</text>
+    <rect x="250" y="3" width="18" height="18" class="box-known"/>
+    <text x="275" y="17" class="detail">Conocido (PLY)</text>
+    <rect x="390" y="3" width="18" height="18" class="box-unknown"/>
+    <text x="415" y="17" class="detail">Desconocido</text>
+</g>
+
+<!-- TOTAL TIMING -->
+<g transform="translate(50, 920)">
+    <rect x="0" y="0" width="300" height="40" rx="6" fill="#263238"/>
+    <text x="150" y="18" text-anchor="middle" class="badge-text" style="font-size:12px">TOTAL: 25 ms (worst case)</text>
+    <text x="150" y="32" text-anchor="middle" class="badge-text" style="font-size:9px">17ms(detect) + 8ms(person) | &lt;1ms(known) | &lt;1ms(unknown)</text>
+</g>
+
+</svg>

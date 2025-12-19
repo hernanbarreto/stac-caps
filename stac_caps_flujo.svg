@@ -1,0 +1,402 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="3300" viewBox="0 0 1600 3300">
+<defs>
+    <!-- GLOBAL FILTERS -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+    
+    <!-- GRADIENTS (Subtle tech feel) -->
+    <linearGradient id="grad-process" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#f5f7fa;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad-hardware" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#ffebee;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#ffcdd2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad-io" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad-decision" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#fff8e1;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#ffecb3;stop-opacity:1" />
+    </linearGradient>
+
+    <style>
+        /* Base Fonts */
+        text { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; fill: #263238; }
+        
+        /* Box Classes */
+        .box-process { fill: url(#grad-process); stroke: #455a64; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-hardware { fill: url(#grad-hardware); stroke: #b71c1c; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-io { fill: url(#grad-io); stroke: #1565c0; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-decision { fill: url(#grad-decision); stroke: #ef6c00; stroke-width: 2; filter: url(#shadow); rx: 4; }
+        .box-sync { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-gov { fill: #eceff1; stroke: #546e7a; stroke-width: 2; stroke-dasharray: 4,4; rx: 8; }
+        .box-async { fill: #f3e5f5; stroke: #7b1ff2; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-privacy { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        /* Typography */
+        .title-main { font-size: 32px; font-weight: 800; fill: #fff; letter-spacing: 1px; }
+        .subtitle { font-size: 16px; font-weight: 400; fill: #cfd8dc; }
+        .phase-title { font-size: 20px; font-weight: 700; fill: #37474f; text-transform: uppercase; letter-spacing: 0.5px;}
+        
+        .label { font-size: 15px; font-weight: 700; fill: #000; }
+        .detail { font-size: 12px; font-weight: 400; fill: #455a64; }
+        
+        /* Budget Badge */
+        .badge-rect { fill: #263238; rx: 4; }
+        .badge-text { font-size: 11px; font-weight: 700; fill: #fff; font-family: 'Consolas', monospace; }
+
+        /* Connectors */
+        .arrow { stroke: #546e7a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+        .arrow-critical { stroke: #d32f2f; stroke-width: 3; fill: none; marker-end: url(#arrowhead-red); }
+        .arrow-blue { stroke: #1565c0; stroke-width: 2; fill: none; marker-end: url(#arrowhead-blue); }
+    </style>
+
+    <!-- MARKERS -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#546e7a"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#d32f2f"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#1565c0"/>
+    </marker>
+</defs>
+
+<!-- BACKGROUND -->
+<rect x="0" y="0" width="1600" height="3300" fill="#fcfcfc"/>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#f0f0f0" stroke-width="1"/>
+</pattern>
+<rect x="0" y="0" width="1600" height="3300" fill="url(#grid)"/>
+
+<!-- HEADER (Dark Background + White Text -> OK) -->
+<rect x="0" y="0" width="1600" height="120" fill="#263238"/>
+<text x="800" y="60" text-anchor="middle" class="title-main">STAC-CAPS v3.3: LOGIC FLOW</text>
+<text x="800" y="90" text-anchor="middle" class="subtitle">Real-Time Data Pipeline • 100ms Budget • Hardwire Safety Assurance</text>
+
+<!-- ================= PHASE 1: BOOTSTRAP ================= -->
+<g transform="translate(100, 150)">
+    <rect x="0" y="0" width="1200" height="250" fill="none" stroke="#cfd8dc" stroke-width="2" stroke-dasharray="8,4" rx="15"/>
+    <text x="30" y="35" class="phase-title">PHASE 1: BOOTSTRAP (STATIC)</text>
+
+    <!-- Init -->
+    <g transform="translate(500, 50)">
+        <rect x="0" y="0" width="200" height="60" class="box-process"/>
+        <text x="100" y="35" text-anchor="middle" class="label">System Init</text>
+    </g>
+
+    <g transform="translate(500, 130)">
+        <rect x="0" y="0" width="200" height="60" class="box-process"/>
+        <text x="100" y="25" text-anchor="middle" class="label">Shared Mem</text>
+        <text x="100" y="45" text-anchor="middle" class="detail">Alloc Federation</text>
+    </g>
+
+    <g transform="translate(250, 210)">
+        <rect x="0" y="0" width="700" height="60" class="box-io"/>
+        <text x="350" y="25" text-anchor="middle" class="label">CALIBRATION LOADER</text>
+        <text x="350" y="45" text-anchor="middle" class="detail">Load Intrinsics (K) + Extrinsics (R|t)</text>
+    </g>
+</g>
+
+<!-- SHAFT LINE -->
+<line x1="700" y1="420" x2="700" y2="510" class="arrow-critical"/>
+
+<!-- ================= PHASE 2: REAL-TIME LOOP ================= -->
+<g transform="translate(50, 450)">
+    <rect x="0" y="0" width="1200" height="2600" fill="none" stroke="#ffebee" stroke-width="3" rx="15"/>
+    <rect x="0" y="0" width="180" height="40" fill="#f71c1c" rx="5"/>
+    <text x="90" y="27" text-anchor="middle" fill="#fff" font-weight="bold" font-size="14">PHASE 2: REAL-TIME</text>
+    
+    <text x="1050" y="30" text-anchor="middle" fill="#d32f2f" font-weight="bold" font-size="18">TARGET: 100ms</text>
+
+    <!-- 1. CAPTURE -->
+    <g id="block_frame_capture" transform="translate(500, 60)">
+        <rect x="0" y="0" width="300" height="90" class="box-hardware"/>
+        <text x="150" y="35" text-anchor="middle" class="label">FRAME CAPTURE</text>
+        <text x="150" y="55" text-anchor="middle" class="detail">IMX490 HDR Industrial</text>
+        
+        <!-- Budget Badge -->
+        <rect x="110" y="70" width="80" height="15" class="badge-rect"/>
+        <text x="150" y="81" text-anchor="middle" class="badge-text" >16 ms</text>
+    </g>
+
+    <line id="arrow_capture_to_health" x1="650" y1="150" x2="650" y2="190" class="arrow-critical"/>
+
+    <!-- 2. HEALTH -->
+    <g id="block_health_preprocess" transform="translate(400, 190)">
+        <rect x="0" y="0" width="500" height="80" class="box-process"/>
+        <text x="250" y="30" text-anchor="middle" class="label">FULL HEALTH &amp; PRE-PROCESS</text>
+        <text x="250" y="50" text-anchor="middle" class="detail">Tone Mapping | Thermal Check | Jitter</text>
+        <rect x="210" y="60" width="80" height="15" class="badge-rect"/>
+        <text x="250" y="71" text-anchor="middle" class="badge-text">4 ms</text>
+    </g>
+
+    <line x1="650" y1="270" x2="650" y2="310" class="arrow-critical"/>
+    
+    <!-- SPLIT -->
+    <line x1="650" y1="310" x2="300" y2="340" class="arrow"/>
+    <line x1="650" y1="310" x2="1000" y2="340" class="arrow"/>
+    
+    <!-- 3. PARALLEL ENGINES -->
+    <g id="block_engine_1a" transform="translate(150, 340)">
+        <rect x="0" y="0" width="300" height="100" class="box-process"/>
+        <text x="150" y="30" text-anchor="middle" class="label">ENGINE 1A: DEPTH</text>
+        <text x="150" y="50" text-anchor="middle" class="detail">DepthAnything-v2 (TensorRT)</text>
+        <rect x="110" y="75" width="80" height="15" class="badge-rect"/>
+        <text x="150" y="86" text-anchor="middle" class="badge-text">25 ms</text>
+    </g>
+
+    <g id="block_engine_1b" transform="translate(460, 340)">
+        <!-- Compound Block: Semantic + Object 3D -->
+        <rect x="0" y="0" width="380" height="140" class="box-process" style="stroke:#1565c0;stroke-width:2"/>
+        <text x="190" y="18" text-anchor="middle" class="label" style="fill:#1565c0">ENGINE 1B: SEMANTIC + OBJECT 3D</text>
+        
+        <!-- Sub-block 1: Detection (all objects) -->
+        <rect x="8" y="28" width="80" height="45" rx="4" style="fill:#e3f2fd;stroke:#1976d2;stroke-width:1"/>
+        <text x="48" y="43" text-anchor="middle" class="detail" style="font-weight:600;font-size:9px">RT-DETR-X</text>
+        <text x="48" y="56" text-anchor="middle" class="detail" style="font-size:8px">All Objects</text>
+        <text x="48" y="68" text-anchor="middle" class="detail" style="font-size:7px;fill:#1565c0">17ms</text>
+        
+        <!-- Sub-block 2: Personas (SMPL) -->
+        <rect x="95" y="28" width="90" height="45" rx="4" style="fill:#fff3e0;stroke:#ef6c00;stroke-width:1"/>
+        <text x="140" y="43" text-anchor="middle" class="detail" style="font-weight:600;font-size:9px">Personas</text>
+        <text x="140" y="56" text-anchor="middle" class="detail" style="font-size:8px">SMPL Avatar</text>
+        <text x="140" y="68" text-anchor="middle" class="detail" style="font-size:7px;fill:#ef6c00">8ms</text>
+        
+        <!-- Sub-block 3: Objetos Conocidos (PLY) -->
+        <rect x="192" y="28" width="90" height="45" rx="4" style="fill:#e8f5e9;stroke:#2e7d32;stroke-width:1"/>
+        <text x="237" y="43" text-anchor="middle" class="detail" style="font-weight:600;font-size:9px">Conocidos</text>
+        <text x="237" y="56" text-anchor="middle" class="detail" style="font-size:8px">PLY Library</text>
+        <text x="237" y="68" text-anchor="middle" class="detail" style="font-size:7px;fill:#2e7d32">&lt;1ms</text>
+        
+        <!-- Sub-block 4: Desconocidos (bbox3D) -->
+        <rect x="289" y="28" width="83" height="45" rx="4" style="fill:#f3e5f5;stroke:#7b1fa2;stroke-width:1"/>
+        <text x="330" y="43" text-anchor="middle" class="detail" style="font-weight:600;font-size:9px">Unknown</text>
+        <text x="330" y="56" text-anchor="middle" class="detail" style="font-size:8px">bbox3D only</text>
+        <text x="330" y="68" text-anchor="middle" class="detail" style="font-size:7px;fill:#7b1fa2">async</text>
+        
+        <!-- Unified bbox3D Badge -->
+        <rect x="8" y="80" width="130" height="18" rx="3" style="fill:#1565c0"/>
+        <text x="73" y="92" text-anchor="middle" class="badge-text" style="font-size:8px">📦 ALL: bbox3D output</text>
+        
+        <!-- Privacy Badge -->
+        <rect x="145" y="80" width="100" height="18" rx="3" style="fill:#2e7d32"/>
+        <text x="195" y="92" text-anchor="middle" class="badge-text" style="font-size:8px">🔒 GDPR</text>
+        
+        <!-- Timing Badge -->
+        <rect x="252" y="80" width="80" height="18" class="badge-rect"/>
+        <text x="292" y="92" text-anchor="middle" class="badge-text">25 ms</text>
+        
+        <!-- Flow annotation -->
+        <text x="190" y="118" text-anchor="middle" class="detail" style="font-size:8px;fill:#666">Unified: Personas + Objetos → bbox3D for TTC</text>
+        <text x="190" y="132" text-anchor="middle" class="detail" style="font-size:7px;fill:#7b1fa2">Unknown → Async PLY trigger (ext. service)</text>
+    </g>
+
+    <g id="block_visual_veto" transform="translate(850, 340)">
+        <rect x="0" y="0" width="300" height="100" class="box-process" style="stroke:#ff5722;stroke-width:2"/>
+        <text x="150" y="30" text-anchor="middle" class="label" style="fill:#bf360c">VISUAL VETO (parallel)</text>
+        <text x="150" y="50" text-anchor="middle" class="detail">Sparse Optical Flow Check</text>
+        <text x="150" y="65" text-anchor="middle" class="detail" style="font-size:9px;fill:#666">Cross-validation for Engine 3</text>
+        <rect x="110" y="78" width="80" height="15" class="badge-rect" style="fill:#ff5722"/>
+        <text x="150" y="89" text-anchor="middle" class="badge-text">7 ms</text>
+    </g>
+
+    <!-- JOIN (adjusted for expanded Engine 1B) -->
+    <line x1="300" y1="440" x2="550" y2="530" class="arrow"/>
+    <line x1="1000" y1="440" x2="750" y2="530" class="arrow"/>
+    <line x1="650" y1="480" x2="650" y2="530" class="arrow-critical"/>
+
+    <!-- SYNC (adjusted Y position) -->
+    <g id="block_cuda_sync" transform="translate(450, 530)">
+        <rect x="0" y="0" width="400" height="30" fill="#fff238" rx="4"/>
+        <text x="200" y="20" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">CUDA STREAM SYNCHRONIZATION</text>
+    </g>
+
+    <line x1="650" y1="560" x2="650" y2="600" class="arrow-critical"/>
+
+    <!-- 4. 3D FUSION (NEW - Explicit fusion point) -->
+    <g id="block_3d_fusion" transform="translate(400, 600)">
+        <rect x="0" y="0" width="500" height="70" class="box-process" style="stroke:#00838f;stroke-width:2"/>
+        <text x="250" y="22" text-anchor="middle" class="label" style="fill:#00838f">3D FUSION</text>
+        <text x="250" y="40" text-anchor="middle" class="detail">Depth (1A) + BBox (1B) + SMPL → 3D Objects</text>
+        <text x="250" y="55" text-anchor="middle" class="detail" style="font-size:10px;fill:#666">Lookup Tables Precalc</text>
+        <rect x="210" y="55" width="80" height="12" class="badge-rect" style="fill:#00838f"/>
+        <text x="250" y="65" text-anchor="middle" class="badge-text">3 ms</text>
+    </g>
+
+    <line x1="650" y1="670" x2="650" y2="710" class="arrow-critical"/>
+
+    <!-- 5. 3D METRIC PROJECTION -->
+    <g id="block_3d_projection" transform="translate(400, 710)">
+        <rect x="0" y="0" width="500" height="60" class="box-process"/>
+        <text x="250" y="25" text-anchor="middle" class="label">3D METRIC PROJECTION</text>
+        <text x="250" y="42" text-anchor="middle" class="detail">World Coordinates (Camera → Rail Frame)</text>
+        <rect x="210" y="48" width="80" height="10" class="badge-rect"/>
+        <text x="250" y="56" text-anchor="middle" class="badge-text">2 ms</text>
+    </g>
+
+    <line x1="650" y1="770" x2="650" y2="810" class="arrow-critical"/>
+
+    <!-- 6. PERSISTENCE -->
+    <g id="block_engine_2" transform="translate(400, 810)">
+        <rect x="0" y="0" width="500" height="80" class="box-process"/>
+        <text x="250" y="30" text-anchor="middle" class="label">ENGINE 2: PERSISTENCE</text>
+        <text x="250" y="50" text-anchor="middle" class="detail">BotSORT + SMPL Tracking</text>
+        <rect x="210" y="65" width="80" height="10" class="badge-rect"/>
+        <text x="250" y="73" text-anchor="middle" class="badge-text">5 ms</text>
+    </g>
+
+    <line x1="650" y1="890" x2="650" y2="930" class="arrow-critical"/>
+
+    <!-- 7. FEDERATION -->
+    <g id="block_federated_sync" transform="translate(400, 930)">
+        <rect x="0" y="0" width="500" height="60" class="box-sync"/>
+        <text x="250" y="25" text-anchor="middle" class="label" fill="#4a148c">FEDERATED MICRO-SYNC</text>
+        <text x="250" y="40" text-anchor="middle" class="detail" fill="#6a1b9a">UDP Neighbor Check (Meta-Cognition)</text>
+        <rect x="210" y="48" width="80" height="10" class="badge-rect" style="fill:#4a148c"/>
+        <text x="250" y="56" text-anchor="middle" class="badge-text">1 ms</text>
+    </g>
+
+    <line x1="650" y1="990" x2="650" y2="1030" class="arrow-critical"/>
+
+    <!-- 8. PREDICTION -->
+    <g id="block_engine_3" transform="translate(400, 1030)">
+        <rect x="0" y="0" width="500" height="80" class="box-process"/>
+        <text x="250" y="30" text-anchor="middle" class="label">ENGINE 3: BEHAVIOR</text>
+        <text x="250" y="50" text-anchor="middle" class="detail">SMPL Pose + Kinematics + ToM</text>
+        <rect x="210" y="65" width="80" height="10" class="badge-rect"/>
+        <text x="250" y="73" text-anchor="middle" class="badge-text">3 ms</text>
+    </g>
+
+    <line x1="650" y1="1110" x2="650" y2="1150" class="arrow-critical"/>
+
+    <!-- 9. CONSENSUS -->
+    <g id="block_consensus" transform="translate(350, 1150)">
+        <polygon points="300,0 600,60 300,120 0,60" class="box-decision"/>
+        <text x="300" y="45" text-anchor="middle" class="label">CONSENSUS CHECK</text>
+        <text x="300" y="65" text-anchor="middle" class="detail">Flow vs Track vs Uncert</text>
+        <rect x="260" y="75" width="80" height="15" class="badge-rect" style="fill:#e65100"/>
+        <text x="300" y="86" text-anchor="middle" class="badge-text">5 ms</text>
+    </g>
+
+    <!-- Fail Path -->
+    <line x1="350" y1="1210" x2="300" y2="1210" class="arrow-critical"/>
+    <g id="block_safe_mode" transform="translate(100, 1180)">
+        <rect x="0" y="0" width="200" height="60" class="box-hardware"/>
+        <text x="100" y="25" text-anchor="middle" class="label" fill="#b71c1c">SAFE MODE</text>
+        <text x="100" y="45" text-anchor="middle" class="detail">Force Stop / Alert</text>
+    </g>
+
+    <!-- Pass Path -->
+    <line x1="650" y1="1270" x2="650" y2="1310" class="arrow-critical"/>
+
+    <!-- 10. TTC -->
+    <g id="block_ttc_calc" transform="translate(450, 1310)">
+        <rect x="0" y="0" width="400" height="60" class="box-process"/>
+        <text x="200" y="25" text-anchor="middle" class="label">CALCULATE TTC</text>
+        <text x="200" y="40" text-anchor="middle" class="detail">Vector Math Intersect</text>
+        <rect x="160" y="48" width="80" height="10" class="badge-rect"/>
+        <text x="200" y="56" text-anchor="middle" class="badge-text">2 ms</text>
+    </g>
+
+    <line x1="650" y1="1370" x2="650" y2="1410" class="arrow-critical"/>
+
+    <!-- 11. GOVERNANCE DECISION -->
+    <g id="block_governance" transform="translate(150, 1410)">
+        <rect x="0" y="0" width="950" height="250" fill="none" stroke="#b0bec5" stroke-dasharray="8,4" rx="10"/>
+        <text x="475" y="20" text-anchor="middle" class="detail" font-weight="bold">GOVERNANCE LAYER: FAIL-SAFE vs FAIL-OP</text>
+
+        <!-- Arrows -->
+        <line x1="500" y1="0" x2="150" y2="50" class="arrow-critical"/> 
+        <line x1="500" y1="0" x2="500" y2="50" class="arrow"/> 
+        <line x1="500" y1="0" x2="800" y2="50" class="arrow"/> 
+
+        <!-- Critical Brake (RED BLOCK) -->
+        <g transform="translate(50, 50)">
+            <!-- SOLID RED FILL FOR ALERT + WHITE TEXT -->
+            <polygon points="100,0 200,40 100,80 0,40" style="fill:#d32f2f;stroke:#b71c1c;stroke-width:2;filter:url(#shadow)"/>
+            <text x="100" y="40" text-anchor="middle" class="label" fill="#ffffff" font-weight="800">TTC &lt; 1.0s</text>
+            <text x="100" y="55" text-anchor="middle" class="detail" fill="#ffebee">Critical Risk</text>
+            
+            <line x1="100" y1="80" x2="100" y2="120" class="arrow-critical"/>
+            
+            <rect x="0" y="120" width="200" height="70" class="box-hardware"/>
+            <text x="100" y="145" text-anchor="middle" class="label" fill="#b71c1c">HARDWIRE BRAKE</text>
+            <text x="100" y="165" text-anchor="middle" class="detail">Direct GPIO Relay</text>
+        </g>
+
+        <!-- Warning (YELLOW BLOCK) -->
+        <g transform="translate(400, 50)">
+            <polygon points="100,0 200,40 100,80 0,40" class="box-decision" style="fill:#fff9c4;stroke:#fbc02d"/>
+            <text x="100" y="40" text-anchor="middle" class="label">TTC &lt; 3.0s</text>
+            
+            <line x1="100" y1="80" x2="100" y2="120" class="arrow"/>
+            
+            <rect x="0" y="120" width="200" height="70" class="box-io"/>
+            <text x="100" y="145" text-anchor="middle" class="label">PREPARE ALERT</text>
+            <text x="100" y="165" text-anchor="middle" class="detail">Set MQTT Flag</text>
+        </g>
+
+        <!-- Clear (GREEN BLOCK) -->
+        <g transform="translate(750, 50)">
+             <polygon points="100,0 200,40 100,80 0,40" style="fill:#e8f5e9;stroke:#2e7d32;stroke-width:2;filter:url(#shadow)"/>
+             <text x="100" y="45" text-anchor="middle" class="label" fill="#1b5e20">Clear</text>
+        </g>
+    </g>
+    
+    <!-- 12. AUDIT & OUTPUT (GDPR implicit in Engine 1B canonical avatar) -->
+    <path d="M 300 1630 L 300 1670 L 650 1670 L 650 1700" class="arrow-critical" fill="none"/>
+    <path d="M 650 1630 L 650 1700" class="arrow" fill="none"/>
+    <path d="M 1000 1530 L 1000 1670 L 650 1670 L 650 1700" class="arrow" fill="none"/>
+
+    <g id="block_traceability" transform="translate(300, 1700)">
+        <rect x="0" y="0" width="700" height="90" class="box-gov"/>
+        <text x="350" y="30" text-anchor="middle" class="label">TRACEABILITY HASH (ISO)</text>
+        <text x="350" y="50" text-anchor="middle" class="detail">SHA256(SMPL Avatar + Decision) → Log</text>
+        <rect x="310" y="65" width="80" height="15" class="badge-rect"/>
+        <text x="350" y="76" text-anchor="middle" class="badge-text">2 ms</text>
+        
+        <!-- Privacy Note Badge -->
+        <rect x="450" y="55" width="140" height="25" rx="4" style="fill:#e8f5e9;stroke:#2e7d32"/>
+        <text x="520" y="72" text-anchor="middle" style="font-size:9px;fill:#2e7d32;font-weight:600">🔒 GDPR IMPLICIT</text>
+    </g>
+
+    <line x1="650" y1="1790" x2="650" y2="1830" class="arrow"/>
+
+    <g id="block_serialize" transform="translate(450, 1830)">
+        <rect x="0" y="0" width="400" height="90" class="box-io"/>
+        <text x="200" y="30" text-anchor="middle" class="label">SERIALIZE &amp; SEND</text>
+        <text x="200" y="50" text-anchor="middle" class="detail">1. Sync: MQTT/REST/SCADA</text>
+        <text x="200" y="65" text-anchor="middle" class="detail">2. Async: Avatar to XAI</text>
+        <rect x="160" y="72" width="80" height="10" class="badge-rect" style="fill:#1565c0"/>
+        <text x="200" y="80" text-anchor="middle" class="badge-text">3 ms</text>
+    </g>
+
+</g>
+
+<!-- ================= ASYNC BACKGROUND (MOVED RIGHT) ================= -->
+<g id="block_async_background" transform="translate(1280, 480)">
+    <rect x="0" y="0" width="300" height="800" fill="#f1f8e9" stroke="#33691e" stroke-width="1" stroke-dasharray="5,5" rx="10"/>
+    <text x="150" y="30" text-anchor="middle" class="phase-title" fill="#33691e" font-size="14">ASYNC BACKGROUND</text>
+
+    <g transform="translate(25, 80)">
+        <rect x="0" y="0" width="250" height="80" class="box-async"/>
+        <text x="125" y="35" text-anchor="middle" class="label">FULL FEDERATED SYNC</text>
+        <text x="125" y="55" text-anchor="middle" class="detail">Heavy Model Updates</text>
+    </g>
+
+    <g transform="translate(25, 200)">
+        <rect x="0" y="0" width="250" height="80" class="box-async"/>
+        <text x="125" y="35" text-anchor="middle" class="label">XAI HEATMAP RENDER</text>
+        <text x="125" y="55" text-anchor="middle" class="detail">Heavy Visualization</text>
+    </g>
+    
+    <text x="150" y="750" text-anchor="middle" class="detail" fill="#558b2f">Does not block RT Loop</text>
+</g>
+
+</svg>

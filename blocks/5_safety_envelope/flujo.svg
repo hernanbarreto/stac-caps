@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1400" viewBox="0 0 1000 1400">
+<defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+    
+    <style>
+        text { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; fill: #263238; }
+        .title { font-size: 22px; font-weight: 800; fill: #fff; }
+        .subtitle { font-size: 14px; fill: #eceff1; }
+        .label { font-size: 13px; font-weight: 700; fill: #000; }
+        .detail { font-size: 11px; fill: #455a64; }
+        .code { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #b71c1c; }
+        
+        .box-step { fill: #ffffff; stroke: #455a64; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-eval { fill: #fff3e0; stroke: #ef6c00; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-decision { fill: #ffebee; stroke: #d32f2f; stroke-width: 2; filter: url(#shadow); rx: 4; }
+        
+        .box-emergency { fill: #b71c1c; stroke: #7f0000; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-warning { fill: #ff9800; stroke: #ef6c00; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-caution { fill: #fff9c4; stroke: #f9a825; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-clear { fill: #c8e6c9; stroke: #2e7d32; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        .box-output { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        .arrow { stroke: #546e7a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+        .arrow-red { stroke: #d32f2f; stroke-width: 3; fill: none; marker-end: url(#arrowhead-red); }
+        .arrow-green { stroke: #2e7d32; stroke-width: 2; fill: none; marker-end: url(#arrowhead-green); }
+        
+        .badge { fill: #263238; rx: 4; }
+        .badge-red { fill: #b71c1c; rx: 4; }
+        .badge-text { font-size: 9px; font-weight: 700; fill: #fff; font-family: 'Consolas', monospace; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#546e7a"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#d32f2f"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#2e7d32"/>
+    </marker>
+</defs>
+
+<!-- HEADER -->
+<rect x="0" y="0" width="1000" height="70" fill="#d32f2f"/>
+<text x="500" y="35" text-anchor="middle" class="title">SAFETY VETO FLOW</text>
+<text x="500" y="55" text-anchor="middle" class="subtitle">Decision Logic • 7ms Budget • ISO 26262 Compliant</text>
+
+<!-- STEP 1: INPUT -->
+<g transform="translate(350, 100)">
+    <rect x="0" y="0" width="300" height="80" class="box-step"/>
+    <text x="150" y="25" text-anchor="middle" class="label">1. RECEIVE FROM ENGINE 3</text>
+    <text x="150" y="48" text-anchor="middle" class="code">ttc_result, risk_scores, validation_status</text>
+    <text x="150" y="65" text-anchor="middle" class="detail">predictions, safety_margin</text>
+</g>
+<line x1="500" y1="180" x2="500" y2="210" class="arrow"/>
+
+<!-- STEP 2: EVALUATE TTC -->
+<g transform="translate(300, 210)">
+    <rect x="0" y="0" width="400" height="100" class="box-eval"/>
+    <text x="200" y="25" text-anchor="middle" class="label" fill="#ef6c00">2. EVALUATE TTC</text>
+    
+    <g transform="translate(20, 40)">
+        <rect x="0" y="0" width="360" height="40" rx="4" fill="#fff" stroke="#ef6c00"/>
+        <text x="180" y="18" text-anchor="middle" class="code" style="fill:#ef6c00">if validation == UNCERTAIN or conf &lt; 0.7:</text>
+        <text x="180" y="32" text-anchor="middle" class="detail">effective_ttc = ttc.min  |  else: ttc.mean</text>
+    </g>
+    
+    <rect x="160" y="85" width="80" height="12" class="badge"/>
+    <text x="200" y="94" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+<line x1="500" y1="310" x2="500" y2="340" class="arrow"/>
+
+<!-- STEP 3: AGGREGATE RISK -->
+<g transform="translate(300, 340)">
+    <rect x="0" y="0" width="400" height="80" class="box-eval"/>
+    <text x="200" y="25" text-anchor="middle" class="label" fill="#ef6c00">3. AGGREGATE RISK</text>
+    
+    <g transform="translate(20, 38)">
+        <rect x="0" y="0" width="360" height="28" rx="4" fill="#fff" stroke="#ef6c00"/>
+        <text x="180" y="18" text-anchor="middle" class="code" style="fill:#ef6c00">max_risk, critical_count = aggregate(risk_scores)</text>
+    </g>
+    
+    <rect x="160" y="68" width="80" height="10" class="badge"/>
+    <text x="200" y="76" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+<line x1="500" y1="420" x2="500" y2="450" class="arrow-red"/>
+
+<!-- STEP 4: DECISION - TTC < 1.0s? -->
+<g transform="translate(350, 450)">
+    <polygon points="150,0 300,45 150,90 0,45" fill="#d32f2f" stroke="#b71c1c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="150" y="40" text-anchor="middle" fill="#fff" style="font-size:12px;font-weight:700">TTC &lt; 1.0s?</text>
+    <text x="150" y="55" text-anchor="middle" fill="#ffebee" style="font-size:9px">or critical_count ≥ 3</text>
+</g>
+
+<!-- YES: EMERGENCY -->
+<line x1="650" y1="495" x2="720" y2="495" class="arrow-red"/>
+<text x="680" y="485" class="detail" fill="#d32f2f">Yes</text>
+
+<g transform="translate(720, 460)">
+    <rect x="0" y="0" width="200" height="70" class="box-emergency"/>
+    <text x="100" y="25" text-anchor="middle" class="badge-text" style="font-size:12px">EMERGENCY BRAKE</text>
+    <text x="100" y="45" text-anchor="middle" class="badge-text" style="font-size:9px">GPIO_BRAKE_RELAY</text>
+    <text x="100" y="58" text-anchor="middle" class="badge-text" style="font-size:8px">&lt;0.5 ms direct</text>
+</g>
+
+<!-- NO: Continue -->
+<line x1="500" y1="540" x2="500" y2="580" class="arrow"/>
+<text x="520" y="565" class="detail">No</text>
+
+<!-- STEP 5: TTC < 3.0s? -->
+<g transform="translate(350, 580)">
+    <polygon points="150,0 300,45 150,90 0,45" fill="#ff9800" stroke="#ef6c00" stroke-width="2" filter="url(#shadow)"/>
+    <text x="150" y="48" text-anchor="middle" fill="#fff" style="font-size:12px;font-weight:700">TTC &lt; 3.0s?</text>
+</g>
+
+<!-- YES: WARNING -->
+<line x1="650" y1="625" x2="720" y2="625" class="arrow"/>
+<text x="680" y="615" class="detail" fill="#ef6c00">Yes</text>
+
+<g transform="translate(720, 590)">
+    <rect x="0" y="0" width="200" height="70" class="box-warning"/>
+    <text x="100" y="25" text-anchor="middle" class="badge-text" style="font-size:12px">WARNING</text>
+    <text x="100" y="45" text-anchor="middle" class="badge-text" style="font-size:9px">MQTT Alert</text>
+    <text x="100" y="58" text-anchor="middle" class="badge-text" style="font-size:8px">Prepare braking</text>
+</g>
+
+<!-- NO: Continue -->
+<line x1="500" y1="670" x2="500" y2="710" class="arrow"/>
+<text x="520" y="695" class="detail">No</text>
+
+<!-- STEP 6: TTC < 5.0s? -->
+<g transform="translate(350, 710)">
+    <polygon points="150,0 300,45 150,90 0,45" fill="#ffeb3b" stroke="#f9a825" stroke-width="2" filter="url(#shadow)"/>
+    <text x="150" y="48" text-anchor="middle" fill="#333" style="font-size:12px;font-weight:700">TTC &lt; 5.0s?</text>
+</g>
+
+<!-- YES: CAUTION -->
+<line x1="650" y1="755" x2="720" y2="755" class="arrow"/>
+<text x="680" y="745" class="detail" fill="#f9a825">Yes</text>
+
+<g transform="translate(720, 720)">
+    <rect x="0" y="0" width="200" height="70" class="box-caution"/>
+    <text x="100" y="25" text-anchor="middle" fill="#333" style="font-size:12px;font-weight:700">CAUTION</text>
+    <text x="100" y="45" text-anchor="middle" class="code" style="fill:#333">Log only</text>
+    <text x="100" y="58" text-anchor="middle" class="detail">Increase monitoring</text>
+</g>
+
+<!-- NO: CLEAR -->
+<line x1="500" y1="800" x2="500" y2="850" class="arrow-green"/>
+<text x="520" y="825" class="detail" fill="#2e7d32">No</text>
+
+<g transform="translate(350, 850)">
+    <rect x="0" y="0" width="300" height="60" class="box-clear"/>
+    <text x="150" y="25" text-anchor="middle" fill="#1b5e20" style="font-size:14px;font-weight:700">CLEAR</text>
+    <text x="150" y="45" text-anchor="middle" class="detail" fill="#1b5e20">Normal operation</text>
+</g>
+
+<!-- All paths merge -->
+<path d="M 820 530 L 820 970 L 500 970" class="arrow" style="stroke:#b71c1c" fill="none"/>
+<path d="M 820 660 L 820 970" style="stroke:#ef6c00;stroke-width:2" fill="none"/>
+<path d="M 820 790 L 820 970" style="stroke:#f9a825;stroke-width:2" fill="none"/>
+<path d="M 500 910 L 500 970" class="arrow-green"/>
+
+<!-- STEP 7: LOG AUDIT -->
+<g transform="translate(300, 970)">
+    <rect x="0" y="0" width="400" height="80" class="box-step"/>
+    <text x="200" y="25" text-anchor="middle" class="label">7. AUDIT LOG (async)</text>
+    
+    <g transform="translate(20, 38)">
+        <rect x="0" y="0" width="360" height="28" rx="4" fill="#e8eaf6" stroke="#3f51b5"/>
+        <text x="180" y="18" text-anchor="middle" class="code" style="fill:#3f51b5">timestamp, ttc, action, rationale → ISO 26262</text>
+    </g>
+</g>
+<line x1="500" y1="1050" x2="500" y2="1080" class="arrow-green"/>
+
+<!-- OUTPUT -->
+<g transform="translate(250, 1080)">
+    <rect x="0" y="0" width="500" height="130" class="box-output"/>
+    <text x="250" y="25" text-anchor="middle" class="label" fill="#2e7d32">OUTPUT</text>
+    
+    <rect x="25" y="45" width="140" height="35" rx="4" fill="#fff" stroke="#2e7d32"/>
+    <text x="95" y="68" text-anchor="middle" class="code" style="fill:#2e7d32">action</text>
+    
+    <rect x="180" y="45" width="140" height="35" rx="4" fill="#fff" stroke="#2e7d32"/>
+    <text x="250" y="68" text-anchor="middle" class="code" style="fill:#2e7d32">brake_cmd</text>
+    
+    <rect x="335" y="45" width="140" height="35" rx="4" fill="#fff" stroke="#2e7d32"/>
+    <text x="405" y="68" text-anchor="middle" class="code" style="fill:#2e7d32">alert_level</text>
+    
+    <rect x="100" y="95" width="300" height="25" rx="4" fill="#fff" stroke="#2e7d32"/>
+    <text x="250" y="112" text-anchor="middle" class="detail" fill="#2e7d32">→ CAN Bus / SCADA / MQTT</text>
+</g>
+
+<!-- TOTAL TIMING -->
+<g transform="translate(750, 1270)">
+    <rect x="0" y="0" width="180" height="50" rx="6" fill="#b71c1c"/>
+    <text x="90" y="20" text-anchor="middle" class="badge-text" style="font-size:14px">TOTAL: 7 ms</text>
+    <text x="90" y="38" text-anchor="middle" class="badge-text" style="font-size:9px">eval + decision + emit</text>
+</g>
+
+</svg>

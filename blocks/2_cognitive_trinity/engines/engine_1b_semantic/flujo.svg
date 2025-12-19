@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="1650" viewBox="0 0 1300 1650">
+<defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+    
+    <style>
+        text { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; fill: #263238; }
+        .title { font-size: 22px; font-weight: 800; fill: #fff; }
+        .subtitle { font-size: 14px; fill: #eceff1; }
+        .label { font-size: 13px; font-weight: 700; fill: #000; }
+        .detail { font-size: 11px; fill: #455a64; }
+        .code { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #0d47a1; }
+        
+        .box-step { fill: #ffffff; stroke: #455a64; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-decision { fill: #fff8e1; stroke: #f57f17; stroke-width: 2; filter: url(#shadow); rx: 4; }
+        .box-detect { fill: #e3f2fd; stroke: #1565c0; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-person { fill: #fff3e0; stroke: #ef6c00; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-known { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-unknown { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        .arrow { stroke: #546e7a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+        .arrow-orange { stroke: #ef6c00; stroke-width: 2; fill: none; marker-end: url(#arrowhead-orange); }
+        .arrow-green { stroke: #2e7d32; stroke-width: 2; fill: none; marker-end: url(#arrowhead-green); }
+        .arrow-purple { stroke: #7b1fa2; stroke-width: 2; stroke-dasharray: 5,3; fill: none; marker-end: url(#arrowhead-purple); }
+        
+        .badge { fill: #263238; rx: 4; }
+        .badge-text { font-size: 9px; font-weight: 700; fill: #fff; font-family: 'Consolas', monospace; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#546e7a"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#ef6c00"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#7b1fa2"/>
+    </marker>
+</defs>
+
+<!-- HEADER -->
+<rect x="0" y="0" width="1300" height="70" fill="#1565c0"/>
+<text x="650" y="35" text-anchor="middle" class="title">ENGINE 1B: LOGIC FLOW (3-CATEGORY)</text>
+<text x="650" y="55" text-anchor="middle" class="subtitle">Unified Classification: Personas • Objetos Conocidos • Objetos Desconocidos • 25ms Budget</text>
+
+<!-- STEP 1: INPUT -->
+<g id="step_input" transform="translate(500, 100)">
+    <rect x="0" y="0" width="300" height="60" class="box-step"/>
+    <text x="150" y="25" text-anchor="middle" class="label">1. RECEIVE FRAME + DEPTH</text>
+    <text x="150" y="45" text-anchor="middle" class="code">frame + depth_map from Pre-Process</text>
+</g>
+<line x1="650" y1="160" x2="650" y2="200" class="arrow"/>
+
+<!-- STEP 2: RT-DETR-X -->
+<g id="step_detection" transform="translate(450, 200)">
+    <rect x="0" y="0" width="400" height="80" class="box-detect"/>
+    <text x="200" y="25" text-anchor="middle" class="label" fill="#1565c0">2. RT-DETR-X DETECTION</text>
+    <text x="200" y="45" text-anchor="middle" class="code">detections = rt_detr(frame) → All objects</text>
+    <text x="200" y="60" text-anchor="middle" class="detail">{class_id, bbox, confidence}</text>
+    <rect x="160" y="65" width="80" height="12" class="badge"/>
+    <text x="200" y="74" text-anchor="middle" class="badge-text">17 ms</text>
+</g>
+<line x1="650" y1="280" x2="650" y2="320" class="arrow"/>
+
+<!-- STEP 3: FOR EACH DETECTION LOOP -->
+<g id="step_loop" transform="translate(50, 320)">
+    <rect x="0" y="0" width="1200" height="780" rx="10" fill="none" stroke="#455a64" stroke-width="2" stroke-dasharray="8,4"/>
+    <rect x="0" y="0" width="220" height="25" fill="#455a64" rx="5"/>
+    <text x="110" y="17" text-anchor="middle" class="badge-text" style="font-size:11px">FOR EACH detection[i]</text>
+
+    <!-- CLASSIFIER DECISION -->
+    <g transform="translate(500, 50)">
+        <polygon points="100,0 200,50 100,100 0,50" class="box-decision"/>
+        <text x="100" y="45" text-anchor="middle" class="label">class_id?</text>
+        <text x="100" y="65" text-anchor="middle" class="detail">Categorize</text>
+    </g>
+    
+    <!-- BRANCH LABELS at top -->
+    <text x="200" y="130" text-anchor="middle" class="label" fill="#ef6c00">= 0 (PERSONA)</text>
+    <text x="600" y="130" text-anchor="middle" class="label" fill="#2e7d32">1-50 (CONOCIDO)</text>
+    <text x="1000" y="130" text-anchor="middle" class="label" fill="#7b1fa2">&gt;50 (UNKNOWN)</text>
+
+    <!-- Arrows to branches -->
+    <path d="M 500 100 L 200 100 L 200 150" class="arrow-orange"/>
+    <path d="M 600 150 L 600 150" class="arrow-green"/>
+    <line x1="600" y1="150" x2="600" y2="150" class="arrow-green"/>
+    <path d="M 700 100 L 1000 100 L 1000 150" class="arrow-purple"/>
+
+    <!-- ==================== BRANCH 1: PERSONA ==================== -->
+    <g id="branch_person" transform="translate(20, 150)">
+        <rect x="0" y="0" width="360" height="400" class="box-person"/>
+        <text x="180" y="25" text-anchor="middle" class="label" fill="#ef6c00">PERSONA</text>
+        
+        <!-- P1: Get Track ID -->
+        <g transform="translate(15, 40)">
+            <rect x="0" y="0" width="330" height="45" rx="4" fill="#fff" stroke="#ef6c00"/>
+            <text x="165" y="20" text-anchor="middle" class="label" style="font-size:11px">P1. Get Track ID</text>
+            <text x="165" y="36" text-anchor="middle" class="code">tid = detection.track_id</text>
+        </g>
+        
+        <!-- Decision: In Cache? -->
+        <g transform="translate(95, 100)">
+            <polygon points="70,0 140,30 70,60 0,30" fill="#fff8e1" stroke="#f57f17" stroke-width="1"/>
+            <text x="70" y="32" text-anchor="middle" class="detail" font-weight="600">in cache?</text>
+        </g>
+        
+        <!-- No: Create -->
+        <path d="M 95 160 L 60 185" class="arrow" style="stroke:#d32f2f"/>
+        <g transform="translate(15, 185)">
+            <rect x="0" y="0" width="130" height="50" rx="4" fill="#c8e6c9" stroke="#2e7d32"/>
+            <text x="65" y="18" text-anchor="middle" class="label" fill="#2e7d32" style="font-size:10px">CREATE</text>
+            <text x="65" y="35" text-anchor="middle" class="code">cache[tid]=SMPL</text>
+        </g>
+        
+        <!-- Yes: Get -->
+        <path d="M 235 160 L 270 185" class="arrow" style="stroke:#2e7d32"/>
+        <g transform="translate(185, 185)">
+            <rect x="0" y="0" width="130" height="50" rx="4" fill="#c8e6c9" stroke="#2e7d32"/>
+            <text x="65" y="18" text-anchor="middle" class="label" fill="#2e7d32" style="font-size:10px">GET</text>
+            <text x="65" y="35" text-anchor="middle" class="code">avatar=cache[tid]</text>
+        </g>
+        
+        <!-- P2: RTMPose -->
+        <g transform="translate(15, 250)">
+            <rect x="0" y="0" width="330" height="55" rx="4" fill="#ffe0b2" stroke="#ef6c00"/>
+            <text x="165" y="18" text-anchor="middle" class="label" fill="#ef6c00" style="font-size:11px">P2. RTMPose-T</text>
+            <text x="165" y="35" text-anchor="middle" class="code">θ = rtmpose(crop)</text>
+            <rect x="125" y="42" width="80" height="10" class="badge"/>
+            <text x="165" y="50" text-anchor="middle" class="badge-text" style="font-size:8px">5 ms</text>
+        </g>
+        
+        <!-- P3: Apply -->
+        <g transform="translate(15, 315)">
+            <rect x="0" y="0" width="330" height="40" rx="4" fill="#fff" stroke="#ef6c00"/>
+            <text x="165" y="16" text-anchor="middle" class="label" style="font-size:10px">P3. Apply θ + bbox3D</text>
+            <text x="165" y="32" text-anchor="middle" class="code">avatar.θ=θ; bbox3D=...</text>
+        </g>
+        
+        <!-- Output -->
+        <g transform="translate(15, 365)">
+            <rect x="0" y="0" width="330" height="25" rx="4" fill="#ef6c00"/>
+            <text x="165" y="17" text-anchor="middle" class="badge-text">SMPL[85] + bbox3D</text>
+        </g>
+    </g>
+
+    <!-- ==================== BRANCH 2: OBJETO CONOCIDO ==================== -->
+    <g id="branch_known" transform="translate(420, 150)">
+        <rect x="0" y="0" width="360" height="400" class="box-known"/>
+        <text x="180" y="25" text-anchor="middle" class="label" fill="#2e7d32">CONOCIDO (1-50)</text>
+        
+        <!-- K1: PLY Lookup -->
+        <g transform="translate(15, 50)">
+            <rect x="0" y="0" width="330" height="70" rx="4" fill="#c8e6c9" stroke="#2e7d32"/>
+            <text x="165" y="20" text-anchor="middle" class="label" fill="#2e7d32" style="font-size:11px">K1. PLY Library Lookup</text>
+            <text x="165" y="40" text-anchor="middle" class="code">ply_ref = PLY_LIBRARY[class_id]</text>
+            <rect x="125" y="52" width="80" height="12" class="badge"/>
+            <text x="165" y="61" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+        </g>
+        
+        <!-- K2: Transform -->
+        <g transform="translate(15, 135)">
+            <rect x="0" y="0" width="330" height="70" rx="4" fill="#e8f5e9" stroke="#2e7d32"/>
+            <text x="165" y="20" text-anchor="middle" class="label" style="font-size:11px">K2. Scale &amp; Orient</text>
+            <text x="165" y="40" text-anchor="middle" class="code">bbox3D = align_ply(depth)</text>
+            <rect x="125" y="52" width="80" height="12" class="badge"/>
+            <text x="165" y="61" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+        </g>
+        
+        <!-- Output -->
+        <g transform="translate(15, 220)">
+            <rect x="0" y="0" width="330" height="30" rx="4" fill="#2e7d32"/>
+            <text x="165" y="20" text-anchor="middle" class="badge-text">ply_ref + bbox3D</text>
+        </g>
+        
+        <!-- Example -->
+        <text x="180" y="280" text-anchor="middle" class="detail" fill="#1b5e20">train, car, truck, bus...</text>
+        
+        <!-- Spacer/padding -->
+        <rect x="15" y="300" width="330" height="85" fill="none"/>
+    </g>
+
+    <!-- ==================== BRANCH 3: OBJETO DESCONOCIDO ==================== -->
+    <g id="branch_unknown" transform="translate(820, 150)">
+        <rect x="0" y="0" width="360" height="400" class="box-unknown"/>
+        <text x="180" y="25" text-anchor="middle" class="label" fill="#7b1fa2">UNKNOWN (&gt;50)</text>
+        
+        <!-- U1: Depth bbox -->
+        <g transform="translate(15, 50)">
+            <rect x="0" y="0" width="330" height="70" rx="4" fill="#e1bee7" stroke="#7b1fa2"/>
+            <text x="165" y="20" text-anchor="middle" class="label" fill="#7b1fa2" style="font-size:11px">U1. Depth Projection</text>
+            <text x="165" y="40" text-anchor="middle" class="code">bbox3D = project_to_3d(bbox2D, depth)</text>
+            <rect x="125" y="52" width="80" height="12" class="badge"/>
+            <text x="165" y="61" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+        </g>
+        
+        <!-- U2: Async Trigger -->
+        <g transform="translate(15, 135)">
+            <rect x="0" y="0" width="330" height="90" rx="4" fill="#f3e5f5" stroke="#7b1fa2" stroke-dasharray="4,2"/>
+            <text x="165" y="20" text-anchor="middle" class="label" fill="#7b1fa2" style="font-size:11px">U2. Async PLY Trigger</text>
+            <text x="165" y="40" text-anchor="middle" class="code">trigger = UnknownTrigger()</text>
+            <text x="165" y="55" text-anchor="middle" class="code">send_udp(EXT_SERVICE)</text>
+            <rect x="85" y="65" width="160" height="18" class="badge" style="fill:#7b1fa2"/>
+            <text x="165" y="78" text-anchor="middle" class="badge-text">NON-BLOCKING</text>
+        </g>
+        
+        <!-- Output -->
+        <g transform="translate(15, 240)">
+            <rect x="0" y="0" width="330" height="30" rx="4" fill="#7b1fa2"/>
+            <text x="165" y="20" text-anchor="middle" class="badge-text">bbox3D only (temp)</text>
+        </g>
+        
+        <!-- Note -->
+        <g transform="translate(15, 285)">
+            <rect x="0" y="0" width="330" height="50" rx="4" fill="#fce4ec" stroke="#c2185b"/>
+            <text x="165" y="18" text-anchor="middle" class="detail" fill="#880e4f">⚠️ PLY on EXTERNAL system</text>
+            <text x="165" y="35" text-anchor="middle" class="code" fill="#880e4f">SAM-3D → PLY (5-30s)</text>
+        </g>
+        
+        <!-- Spacer -->
+        <rect x="15" y="345" width="330" height="40" fill="none"/>
+    </g>
+
+    <!-- MERGE ARROWS (all branches same height now: 400) -->
+    <path d="M 200 550 L 600 620" class="arrow"/>
+    <line x1="600" y1="550" x2="600" y2="620" class="arrow"/>
+    <path d="M 1000 550 L 600 620" class="arrow"/>
+    
+    <!-- UNIFIED OUTPUT WITHIN LOOP -->
+    <g transform="translate(350, 620)">
+        <rect x="0" y="0" width="500" height="80" rx="6" fill="#fff" stroke="#1565c0" stroke-width="3" filter="url(#shadow)"/>
+        <text x="250" y="25" text-anchor="middle" class="label" fill="#1565c0">UNIFIED DETECTION OUTPUT</text>
+        <text x="250" y="45" text-anchor="middle" class="code">category = PERSON | KNOWN | UNKNOWN</text>
+        <text x="250" y="60" text-anchor="middle" class="code">bbox3D = [x,y,z,w,h,d] → Always present</text>
+        <rect x="180" y="65" width="140" height="12" class="badge" style="fill:#1565c0"/>
+        <text x="250" y="74" text-anchor="middle" class="badge-text">📦 Unified for TTC</text>
+    </g>
+    
+    <!-- LOOP END -->
+    <text x="600" y="740" text-anchor="middle" class="detail" fill="#455a64">END FOR EACH</text>
+</g>
+
+<!-- ARROW: Loop to Final Output -->
+<line x1="650" y1="1100" x2="650" y2="1150" class="arrow"/>
+
+<!-- FINAL OUTPUT -->
+<g id="step_output" transform="translate(350, 1150)">
+    <rect x="0" y="0" width="600" height="100" class="box-step" style="stroke:#1565c0;stroke-width:3"/>
+    <text x="300" y="25" text-anchor="middle" class="label" fill="#1565c0">FINAL OUTPUT</text>
+    <text x="300" y="50" text-anchor="middle" class="code">return detections[]  # All with bbox3D</text>
+    <text x="300" y="70" text-anchor="middle" class="code">+ unknown_triggers[]  # For external PLY service</text>
+    <rect x="230" y="78" width="140" height="18" rx="3" style="fill:#2e7d32"/>
+    <text x="300" y="91" text-anchor="middle" class="badge-text">🔒 GDPR Compliant</text>
+</g>
+
+<!-- TOTAL TIMING -->
+<g transform="translate(1000, 1260)">
+    <rect x="0" y="0" width="220" height="70" rx="6" fill="#263238"/>
+    <text x="110" y="22" text-anchor="middle" class="badge-text" style="font-size:14px">TOTAL: 25 ms</text>
+    <text x="110" y="42" text-anchor="middle" class="badge-text" style="font-size:9px">17ms (detect) + 8ms (person)</text>
+    <text x="110" y="58" text-anchor="middle" class="badge-text" style="font-size:8px">&lt;1ms (known) | &lt;1ms (unknown)</text>
+</g>
+
+</svg>

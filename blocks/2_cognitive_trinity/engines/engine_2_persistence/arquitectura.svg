@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="850" viewBox="0 0 1300 850">
+<defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.15"/>
+    </filter>
+   
+    <style>
+        /* FONTS */
+        text { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; fill: #212121; }
+        .title { font-weight: 800; font-size: 22px; fill: #ffffff; }
+        .subtitle { font-size: 14px; fill: #eceff1; }
+        .label { font-weight: 700; font-size: 14px; fill: #000; }
+        .detail { font-size: 11px; fill: #455a64; }
+        .model { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; font-weight: 600; fill: #880e4f; }
+        .param { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #ad1457; }
+        
+        /* BOXES */
+        .box-main { fill: #fce4ec; stroke: #c2185b; stroke-width: 3; filter: url(#shadow); rx: 12; }
+        .box-component { fill: #ffffff; stroke: #455a64; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        .box-tracker { fill: #f8bbd9; stroke: #c2185b; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-reid { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-kalman { fill: #e3f2fd; stroke: #1565c0; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-ghost { fill: #ffebee; stroke: #d32f2f; stroke-width: 2; stroke-dasharray: 5,3; filter: url(#shadow); rx: 8; }
+        
+        /* COMMON */
+        .arrow { stroke: #546e7a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+        .arrow-pink { stroke: #c2185b; stroke-width: 2; fill: none; marker-end: url(#arrowhead-pink); }
+        .arrow-feedback { stroke: #2e7d32; stroke-width: 2; stroke-dasharray: 5,3; fill: none; marker-end: url(#arrowhead-green); }
+        
+        .badge { fill: #263238; rx: 4; }
+        .badge-text { font-size: 9px; font-weight: 700; fill: #fff; font-family: 'Consolas', monospace; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#546e7a"/>
+    </marker>
+    <marker id="arrowhead-pink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#c2185b"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#2e7d32"/>
+    </marker>
+</defs>
+
+<!-- HEADER -->
+<rect x="0" y="0" width="1300" height="70" fill="#c2185b"/>
+<text x="650" y="35" text-anchor="middle" class="title">ENGINE 2: PERSISTENCE (TEMPORAL TRACKING)</text>
+<text x="650" y="55" text-anchor="middle" class="subtitle">BotSORT • OSNet ReID • Kalman Filter • Occlusion Handling • 5ms Budget</text>
+
+<!-- MAIN CONTAINER -->
+<rect id="engine_2_container" x="30" y="85" width="1240" height="720" class="box-main"/>
+
+<!-- INPUT FROM ENGINE 1B -->
+<g id="comp_input" transform="translate(50, 110)">
+    <rect x="0" y="0" width="200" height="100" class="box-component"/>
+    <text x="100" y="22" text-anchor="middle" class="label">FROM ENGINE 1B</text>
+    <text x="100" y="45" text-anchor="middle" class="model">detections[]</text>
+    <text x="100" y="62" text-anchor="middle" class="param">bbox3D, category</text>
+    <text x="100" y="78" text-anchor="middle" class="param">features[256]</text>
+    <rect x="60" y="82" width="80" height="14" class="badge" style="fill:#1565c0"/>
+    <text x="100" y="93" text-anchor="middle" class="badge-text">Per frame</text>
+</g>
+
+<!-- ARROW: Input to ReID -->
+<line x1="250" y1="160" x2="310" y2="160" class="arrow-pink"/>
+
+<!-- OSNet ReID BLOCK -->
+<g id="comp_osnet" transform="translate(310, 105)">
+    <rect x="0" y="0" width="280" height="200" class="box-reid"/>
+    <text x="140" y="25" text-anchor="middle" class="label" fill="#7b1fa2">OSNet ReID</text>
+    <text x="140" y="45" text-anchor="middle" class="detail">Appearance Embedding</text>
+    
+    <g transform="translate(20, 60)">
+        <rect x="0" y="0" width="240" height="50" rx="4" fill="#ce93d8" stroke="#7b1fa2"/>
+        <text x="120" y="20" text-anchor="middle" class="model">OSNet-x0.25</text>
+        <text x="120" y="38" text-anchor="middle" class="param">Omni-Scale Network</text>
+    </g>
+    
+    <g transform="translate(20, 120)">
+        <rect x="0" y="0" width="240" height="50" rx="4" fill="#fff" stroke="#7b1fa2"/>
+        <text x="120" y="18" text-anchor="middle" class="label" style="font-size:11px">OUTPUT: 512-dim</text>
+        <text x="120" y="36" text-anchor="middle" class="param">Cosine similarity + EMA update</text>
+    </g>
+    
+    <rect x="20" y="180" width="55" height="14" class="badge" style="fill:#7b1fa2"/>
+    <text x="47" y="191" text-anchor="middle" class="badge-text">EMA α=0.7</text>
+    <rect x="100" y="180" width="80" height="14" class="badge"/>
+    <text x="140" y="191" text-anchor="middle" class="badge-text">2 ms</text>
+</g>
+
+<!-- ARROW: ReID to Matcher -->
+<line x1="590" y1="200" x2="650" y2="200" class="arrow"/>
+
+<!-- BotSORT CORE -->
+<g id="comp_botsort" transform="translate(650, 105)">
+    <rect x="0" y="0" width="320" height="320" class="box-tracker"/>
+    <text x="160" y="25" text-anchor="middle" class="label" fill="#c2185b">BotSORT CORE</text>
+    <text x="160" y="45" text-anchor="middle" class="detail">Multi-Object Tracker</text>
+    
+    <!-- Association Stage 1 -->
+    <g transform="translate(20, 60)">
+        <rect x="0" y="0" width="130" height="70" rx="4" fill="#fff" stroke="#c2185b"/>
+        <text x="65" y="18" text-anchor="middle" class="model">Stage 1</text>
+        <text x="65" y="35" text-anchor="middle" class="param">IoU Match</text>
+        <text x="65" y="52" text-anchor="middle" class="param">High conf</text>
+    </g>
+    
+    <!-- Association Stage 2 -->
+    <g transform="translate(165, 60)">
+        <rect x="0" y="0" width="130" height="70" rx="4" fill="#fff" stroke="#c2185b"/>
+        <text x="65" y="18" text-anchor="middle" class="model">Stage 2</text>
+        <text x="65" y="35" text-anchor="middle" class="param">ReID Match</text>
+        <text x="65" y="52" text-anchor="middle" class="param">Appearance</text>
+    </g>
+    
+    <!-- Track Manager -->
+    <g transform="translate(20, 145)">
+        <rect x="0" y="0" width="275" height="70" rx="4" fill="#fce4ec" stroke="#880e4f"/>
+        <text x="137" y="18" text-anchor="middle" class="label" fill="#880e4f" style="font-size:11px">TRACK MANAGER</text>
+        <text x="137" y="38" text-anchor="middle" class="param">Create / Update / Delete</text>
+        <text x="137" y="55" text-anchor="middle" class="param">State: TENTATIVE → ACTIVE → GHOST</text>
+    </g>
+    
+    <!-- Track Memory -->
+    <g transform="translate(20, 230)">
+        <rect x="0" y="0" width="275" height="60" rx="4" fill="#fff" stroke="#c2185b"/>
+        <text x="137" y="18" text-anchor="middle" class="model">TRACK MEMORY</text>
+        <text x="137" y="38" text-anchor="middle" class="param">Dict[track_id → Track]</text>
+        <text x="137" y="52" text-anchor="middle" class="param">LRU Cache (max 50)</text>
+    </g>
+    
+    <rect x="20" y="300" width="55" height="14" class="badge" style="fill:#880e4f"/>
+    <text x="47" y="311" text-anchor="middle" class="badge-text">LRU</text>
+    <rect x="120" y="300" width="80" height="14" class="badge"/>
+    <text x="160" y="311" text-anchor="middle" class="badge-text">3 ms</text>
+</g>
+
+<!-- KALMAN FILTER -->
+<g id="comp_kalman" transform="translate(990, 105)">
+    <rect x="0" y="0" width="260" height="180" class="box-kalman"/>
+    <text x="130" y="25" text-anchor="middle" class="label" fill="#1565c0">KALMAN FILTER</text>
+    <text x="130" y="45" text-anchor="middle" class="detail">Motion Prediction</text>
+    
+    <g transform="translate(15, 60)">
+        <rect x="0" y="0" width="230" height="40" rx="4" fill="#bbdefb" stroke="#1565c0"/>
+        <text x="115" y="18" text-anchor="middle" class="model">State: [x,y,z,vx,vy,vz,w,h]</text>
+        <text x="115" y="32" text-anchor="middle" class="param">8-dimensional</text>
+    </g>
+    
+    <g transform="translate(15, 110)">
+        <rect x="0" y="0" width="230" height="40" rx="4" fill="#fff" stroke="#1565c0"/>
+        <text x="115" y="18" text-anchor="middle" class="model">Predict + Update</text>
+        <text x="115" y="32" text-anchor="middle" class="param">Q = base_Q × (1/confidence)</text>
+    </g>
+    
+    <rect x="15" y="160" width="70" height="14" class="badge" style="fill:#1565c0"/>
+    <text x="50" y="171" text-anchor="middle" class="badge-text">Adaptive Q</text>
+    <rect x="100" y="160" width="80" height="14" class="badge"/>
+    <text x="140" y="171" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+
+<!-- GHOST STATE HANDLER -->
+<g id="comp_ghost" transform="translate(990, 310)">
+    <rect x="0" y="0" width="260" height="140" class="box-ghost"/>
+    <text x="130" y="25" text-anchor="middle" class="label" fill="#d32f2f">GHOST HANDLER</text>
+    <text x="130" y="45" text-anchor="middle" class="detail">Occlusion Persistence</text>
+    
+    <g transform="translate(15, 60)">
+        <rect x="0" y="0" width="230" height="60" rx="4" fill="#ffcdd2" stroke="#d32f2f"/>
+        <text x="115" y="18" text-anchor="middle" class="model">IF no match:</text>
+        <text x="115" y="35" text-anchor="middle" class="param">→ GHOST state</text>
+        <text x="115" y="50" text-anchor="middle" class="param">→ Kalman propagate</text>
+    </g>
+    
+    <text x="130" y="132" text-anchor="middle" class="param" fill="#d32f2f">Max age: 30 frames</text>
+</g>
+
+<!-- CONNECTIONS -->
+<path d="M 970 300 L 1000 300 L 1000 310" class="arrow" marker-end="url(#arrowhead)"/>
+<path d="M 1120 285 L 1120 310" class="arrow" style="stroke:#d32f2f"/>
+<path d="M 990 195 L 970 195 L 970 250" class="arrow" style="stroke:#1565c0"/>
+
+<!-- FEEDBACK TO ENGINE 1B -->
+<g id="comp_feedback" transform="translate(50, 500)">
+    <rect x="0" y="0" width="250" height="120" class="box-component" style="stroke:#2e7d32"/>
+    <text x="125" y="22" text-anchor="middle" class="label" fill="#2e7d32">TO ENGINE 1B</text>
+    <text x="125" y="45" text-anchor="middle" class="model">track_ids[]</text>
+    <text x="125" y="65" text-anchor="middle" class="param">For Avatar Cache lookup</text>
+    <text x="125" y="85" text-anchor="middle" class="param">For PLY reference</text>
+    <rect x="85" y="95" width="80" height="18" class="badge" style="fill:#2e7d32"/>
+    <text x="125" y="108" text-anchor="middle" class="badge-text">Feedback</text>
+</g>
+
+<!-- OUTPUT -->
+<g id="comp_output" transform="translate(350, 480)">
+    <rect x="0" y="0" width="600" height="160" class="box-component" style="stroke:#c2185b;stroke-width:3"/>
+    <text x="300" y="25" text-anchor="middle" class="label" fill="#c2185b">OUTPUT: ENRICHED TRACKS</text>
+    
+    <g transform="translate(20, 40)">
+        <rect x="0" y="0" width="260" height="100" rx="4" fill="#fce4ec" stroke="#c2185b"/>
+        <text x="130" y="18" text-anchor="middle" class="label" style="font-size:11px">Track</text>
+        <text x="130" y="38" text-anchor="middle" class="param">track_id, state</text>
+        <text x="130" y="53" text-anchor="middle" class="param">bbox3D, velocity</text>
+        <text x="130" y="68" text-anchor="middle" class="param">features[512] (EMA)</text>
+        <text x="130" y="83" text-anchor="middle" class="param" style="fill:#c2185b;font-weight:bold">quality_score</text>
+    </g>
+    
+    <g transform="translate(310, 40)">
+        <rect x="0" y="0" width="260" height="100" rx="4" fill="#e8f5e9" stroke="#2e7d32"/>
+        <text x="130" y="18" text-anchor="middle" class="label" style="font-size:11px" fill="#2e7d32">Cache References</text>
+        <text x="130" y="40" text-anchor="middle" class="param">PERSON → smpl_ref (tid)</text>
+        <text x="130" y="58" text-anchor="middle" class="param">KNOWN → ply_ref</text>
+        <text x="130" y="76" text-anchor="middle" class="param">UNKNOWN → bbox3D only</text>
+    </g>
+</g>
+
+<!-- CONNECTION: BotSORT to Output -->
+<line x1="810" y1="425" x2="810" y2="480" class="arrow-pink"/>
+<!-- CONNECTION: Output to Feedback -->
+<path d="M 350 560 L 300 560" class="arrow-feedback"/>
+
+<!-- LEGEND -->
+<g transform="translate(50, 720)">
+    <text x="0" y="15" class="label">COMPONENTS:</text>
+    <rect x="120" y="3" width="18" height="18" class="box-reid"/>
+    <text x="145" y="17" class="detail">ReID</text>
+    <rect x="200" y="3" width="18" height="18" class="box-tracker"/>
+    <text x="225" y="17" class="detail">Tracker</text>
+    <rect x="290" y="3" width="18" height="18" class="box-kalman"/>
+    <text x="315" y="17" class="detail">Kalman</text>
+    <rect x="370" y="3" width="18" height="18" class="box-ghost"/>
+    <text x="395" y="17" class="detail">Ghost</text>
+</g>
+
+<!-- TOTAL TIMING -->
+<g transform="translate(1050, 720)">
+    <rect x="0" y="0" width="180" height="50" rx="6" fill="#263238"/>
+    <text x="90" y="20" text-anchor="middle" class="badge-text" style="font-size:14px">TOTAL: 5 ms</text>
+    <text x="90" y="38" text-anchor="middle" class="badge-text" style="font-size:9px">2ms ReID + 3ms Track</text>
+</g>
+
+</svg>

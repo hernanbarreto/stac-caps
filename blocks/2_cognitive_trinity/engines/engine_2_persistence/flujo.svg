@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1500" viewBox="0 0 1100 1500">
+<defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+    
+    <style>
+        text { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; fill: #263238; }
+        .title { font-size: 22px; font-weight: 800; fill: #fff; }
+        .subtitle { font-size: 14px; fill: #eceff1; }
+        .label { font-size: 13px; font-weight: 700; fill: #000; }
+        .detail { font-size: 11px; fill: #455a64; }
+        .code { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #ad1457; }
+        
+        .box-step { fill: #ffffff; stroke: #455a64; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-decision { fill: #fff8e1; stroke: #f57f17; stroke-width: 2; filter: url(#shadow); rx: 4; }
+        .box-process { fill: #fce4ec; stroke: #c2185b; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-kalman { fill: #e3f2fd; stroke: #1565c0; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-ghost { fill: #ffebee; stroke: #d32f2f; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        .arrow { stroke: #546e7a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+        .arrow-yes { stroke: #2e7d32; stroke-width: 2; fill: none; marker-end: url(#arrowhead-green); }
+        .arrow-no { stroke: #d32f2f; stroke-width: 2; fill: none; marker-end: url(#arrowhead-red); }
+        
+        .badge { fill: #263238; rx: 4; }
+        .badge-text { font-size: 9px; font-weight: 700; fill: #fff; font-family: 'Consolas', monospace; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#546e7a"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#d32f2f"/>
+    </marker>
+</defs>
+
+<!-- HEADER -->
+<rect x="0" y="0" width="1100" height="70" fill="#c2185b"/>
+<text x="550" y="35" text-anchor="middle" class="title">ENGINE 2: PERSISTENCE FLOW</text>
+<text x="550" y="55" text-anchor="middle" class="subtitle">Multi-Object Tracking • ID Assignment • Occlusion Handling • 5ms</text>
+
+<!-- STEP 1: INPUT -->
+<g transform="translate(400, 100)">
+    <rect x="0" y="0" width="300" height="60" class="box-step"/>
+    <text x="150" y="25" text-anchor="middle" class="label">1. RECEIVE DETECTIONS</text>
+    <text x="150" y="45" text-anchor="middle" class="code">detections[] from Engine 1B</text>
+</g>
+<line x1="550" y1="160" x2="550" y2="200" class="arrow"/>
+
+<!-- STEP 2: ReID -->
+<g transform="translate(350, 200)">
+    <rect x="0" y="0" width="400" height="80" rx="6" fill="#e1bee7" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="25" text-anchor="middle" class="label" fill="#7b1fa2">2. EXTRACT ReID FEATURES</text>
+    <text x="200" y="45" text-anchor="middle" class="code">embeddings = osnet(crops)  # [N, 512]</text>
+    <text x="200" y="62" text-anchor="middle" class="detail">Per detection, batched inference</text>
+    <rect x="160" y="65" width="80" height="12" class="badge"/>
+    <text x="200" y="74" text-anchor="middle" class="badge-text">2 ms</text>
+</g>
+<line x1="550" y1="280" x2="550" y2="320" class="arrow"/>
+
+<!-- STEP 3: KALMAN PREDICT -->
+<g transform="translate(350, 320)">
+    <rect x="0" y="0" width="400" height="70" class="box-kalman"/>
+    <text x="200" y="25" text-anchor="middle" class="label" fill="#1565c0">3. PREDICT EXISTING TRACKS</text>
+    <text x="200" y="45" text-anchor="middle" class="code">for track in tracks: track.predict()</text>
+    <text x="200" y="60" text-anchor="middle" class="detail">Advance state via motion model</text>
+</g>
+<line x1="550" y1="390" x2="550" y2="430" class="arrow"/>
+
+<!-- STEP 4: ASSOCIATION -->
+<g transform="translate(300, 430)">
+    <rect x="0" y="0" width="500" height="120" class="box-process"/>
+    <text x="250" y="25" text-anchor="middle" class="label" fill="#c2185b">4. TWO-STAGE ASSOCIATION</text>
+    
+    <g transform="translate(20, 40)">
+        <rect x="0" y="0" width="210" height="60" rx="4" fill="#fff" stroke="#c2185b"/>
+        <text x="105" y="20" text-anchor="middle" class="label" style="font-size:11px">Stage 1: IoU</text>
+        <text x="105" y="40" text-anchor="middle" class="code">Hungarian(iou_matrix)</text>
+        <text x="105" y="52" text-anchor="middle" class="detail">High confidence matches</text>
+    </g>
+    
+    <g transform="translate(260, 40)">
+        <rect x="0" y="0" width="210" height="60" rx="4" fill="#fff" stroke="#7b1fa2"/>
+        <text x="105" y="20" text-anchor="middle" class="label" style="font-size:11px" fill="#7b1fa2">Stage 2: ReID</text>
+        <text x="105" y="40" text-anchor="middle" class="code">Hungarian(dist_matrix)</text>
+        <text x="105" y="52" text-anchor="middle" class="detail">Remaining unmatched</text>
+    </g>
+</g>
+<line x1="550" y1="550" x2="550" y2="600" class="arrow"/>
+
+<!-- DECISION: Match? -->
+<g transform="translate(450, 600)">
+    <polygon points="100,0 200,50 100,100 0,50" class="box-decision"/>
+    <text x="100" y="45" text-anchor="middle" class="label">Match?</text>
+    <text x="100" y="62" text-anchor="middle" class="detail">det ↔ track</text>
+</g>
+
+<!-- YES: UPDATE -->
+<line x1="550" y1="700" x2="550" y2="750" class="arrow-yes"/>
+<text x="570" y="725" class="detail" fill="#2e7d32">Yes</text>
+
+<g transform="translate(350, 750)">
+    <rect x="0" y="0" width="400" height="100" class="box-process"/>
+    <text x="200" y="22" text-anchor="middle" class="label" fill="#c2185b">5. UPDATE MATCHED TRACKS</text>
+    <text x="200" y="40" text-anchor="middle" class="code">track.update(detection)</text>
+    <text x="200" y="55" text-anchor="middle" class="detail">bbox3D, velocity, state=ACTIVE</text>
+    <text x="200" y="70" text-anchor="middle" class="detail">features (EMA α=0.7), quality_score</text>
+    <rect x="160" y="82" width="80" height="12" rx="3" fill="#c2185b"/>
+    <text x="200" y="91" text-anchor="middle" class="badge-text">+ metrics</text>
+</g>
+
+<!-- NO: CHECK UNMATCHED DETECTION -->
+<path d="M 650 650 L 850 650 L 850 680" class="arrow-no"/>
+<text x="750" y="640" text-anchor="middle" class="detail" fill="#d32f2f">No match - det</text>
+
+<g transform="translate(700, 680)">
+    <rect x="0" y="0" width="300" height="80" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+    <text x="150" y="25" text-anchor="middle" class="label" fill="#2e7d32">6. CREATE NEW TRACK</text>
+    <text x="150" y="45" text-anchor="middle" class="code">track = Track(new_id)</text>
+    <text x="150" y="62" text-anchor="middle" class="detail">state = TENTATIVE</text>
+</g>
+
+<!-- UNMATCHED TRACK -->
+<path d="M 450 650 L 150 650 L 150 680" class="arrow-no"/>
+<text x="300" y="640" text-anchor="middle" class="detail" fill="#d32f2f">No match - track</text>
+
+<g transform="translate(50, 680)">
+    <rect x="0" y="0" width="200" height="80" class="box-ghost"/>
+    <text x="100" y="25" text-anchor="middle" class="label" fill="#d32f2f">GHOST</text>
+    <text x="100" y="45" text-anchor="middle" class="code">track.mark_ghost()</text>
+    <text x="100" y="62" text-anchor="middle" class="detail">time_since_update++</text>
+</g>
+
+<!-- MERGE ALL PATHS -->
+<path d="M 150 760 L 150 850 L 550 880" class="arrow"/>
+<path d="M 550 830 L 550 880" class="arrow"/>
+<path d="M 850 760 L 850 850 L 550 880" class="arrow"/>
+
+<!-- STEP 7: GHOST + LRU MANAGEMENT -->
+<g transform="translate(300, 900)">
+    <rect x="0" y="0" width="500" height="140" class="box-ghost"/>
+    <text x="250" y="25" text-anchor="middle" class="label" fill="#d32f2f">7. TRACK MANAGEMENT</text>
+    
+    <g transform="translate(20, 40)">
+        <polygon points="80,0 160,30 80,60 0,30" fill="#fff8e1" stroke="#f57f17" stroke-width="1"/>
+        <text x="80" y="28" text-anchor="middle" class="detail" font-weight="600">age &gt; 30?</text>
+    </g>
+    
+    <path d="M 180 70 L 250 70" style="stroke:#d32f2f;stroke-width:2;fill:none" marker-end="url(#arrowhead-red)"/>
+    <text x="215" y="62" text-anchor="middle" class="detail" fill="#d32f2f">Yes</text>
+    
+    <g transform="translate(250, 45)">
+        <rect x="0" y="0" width="70" height="50" rx="4" fill="#ffcdd2" stroke="#d32f2f"/>
+        <text x="35" y="22" text-anchor="middle" class="label" style="font-size:9px" fill="#d32f2f">DELETE</text>
+        <text x="35" y="38" text-anchor="middle" class="code" style="font-size:8px">remove</text>
+    </g>
+    
+    <!-- LRU EVICTION -->
+    <g transform="translate(330, 45)">
+        <rect x="0" y="0" width="80" height="50" rx="4" fill="#fff3e0" stroke="#ef6c00"/>
+        <text x="40" y="18" text-anchor="middle" class="label" style="font-size:9px" fill="#ef6c00">LRU</text>
+        <text x="40" y="32" text-anchor="middle" class="code" style="font-size:7px">if &gt;50:</text>
+        <text x="40" y="44" text-anchor="middle" class="code" style="font-size:7px">evict low Q</text>
+    </g>
+    
+    <path d="M 80 100 L 80 125 L 430 125 L 430 95" style="stroke:#2e7d32;stroke-width:2;fill:none" marker-end="url(#arrowhead-green)"/>
+    <text x="200" y="120" text-anchor="middle" class="detail" fill="#2e7d32">No: Kalman propagate</text>
+    
+    <g transform="translate(420, 45)">
+        <rect x="0" y="0" width="60" height="50" rx="4" fill="#e3f2fd" stroke="#1565c0"/>
+        <text x="30" y="22" text-anchor="middle" class="label" style="font-size:9px" fill="#1565c0">KEEP</text>
+        <text x="30" y="38" text-anchor="middle" class="code" style="font-size:8px">predict</text>
+    </g>
+</g>
+<line x1="550" y1="1000" x2="550" y2="1040" class="arrow"/>
+
+<!-- STEP 8: OUTPUT -->
+<g transform="translate(300, 1060)">
+    <rect x="0" y="0" width="500" height="130" class="box-step" style="stroke:#c2185b;stroke-width:3"/>
+    <text x="250" y="25" text-anchor="middle" class="label" fill="#c2185b">8. OUTPUT TRACKS</text>
+    <text x="250" y="48" text-anchor="middle" class="code">tracks[] + assignments{}</text>
+    <text x="250" y="65" text-anchor="middle" class="detail">Each track: id, bbox3D, velocity, quality_score</text>
+    
+    <rect x="50" y="80" width="130" height="20" rx="4" fill="#2e7d32"/>
+    <text x="115" y="94" text-anchor="middle" class="badge-text">→ Engine 1B</text>
+    <rect x="200" y="80" width="130" height="20" rx="4" fill="#c2185b"/>
+    <text x="265" y="94" text-anchor="middle" class="badge-text">quality_score</text>
+    <rect x="350" y="80" width="100" height="20" rx="4" fill="#1565c0"/>
+    <text x="400" y="94" text-anchor="middle" class="badge-text">→ Engine 3</text>
+</g>
+<line x1="550" y1="1160" x2="550" y2="1200" class="arrow"/>
+
+<!-- STEP 9: FEEDBACK -->
+<g transform="translate(350, 1200)">
+    <rect x="0" y="0" width="400" height="80" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="25" text-anchor="middle" class="label" fill="#2e7d32">9. FEEDBACK TO ENGINE 1B</text>
+    <text x="200" y="48" text-anchor="middle" class="code">Engine1B.set_track_ids(assignments)</text>
+    <text x="200" y="68" text-anchor="middle" class="detail">Enables Avatar Cache + PLY reference</text>
+</g>
+
+<!-- TOTAL TIMING -->
+<g transform="translate(850, 1300)">
+    <rect x="0" y="0" width="180" height="50" rx="6" fill="#263238"/>
+    <text x="90" y="20" text-anchor="middle" class="badge-text" style="font-size:14px">TOTAL: 5 ms</text>
+    <text x="90" y="38" text-anchor="middle" class="badge-text" style="font-size:9px">2ms ReID + 3ms Track</text>
+</g>
+
+</svg>

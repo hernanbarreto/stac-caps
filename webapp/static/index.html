@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAC-CAPS - Sistema de Seguridad Ferroviaria</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🚂 STAC-CAPS</h1>
+            <p>Sistema de Tracking Avanzado para Colisión y Anti-Colisión</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Left Panel: Upload & Calibration -->
+            <section class="panel panel-left">
+                <div class="card" id="upload-section">
+                    <h2>📁 Cargar Video</h2>
+                    <div class="upload-zone" id="upload-zone">
+                        <input type="file" id="video-input" accept="video/*" hidden>
+                        <label for="video-input" class="upload-label">
+                            <span class="upload-icon">📹</span>
+                            <span>Arrastra o haz clic para cargar video</span>
+                            <span class="upload-formats">MP4, AVI, MOV, MKV</span>
+                        </label>
+                    </div>
+                    <div class="upload-status" id="upload-status"></div>
+                </div>
+
+                <div class="card" id="calibration-section" style="display: none;">
+                    <h2>🔧 Calibración</h2>
+                    <div class="calibration-container">
+                        <canvas id="calibration-canvas"></canvas>
+                        <div class="calibration-info">
+                            <p id="calibration-instruction">Haz clic en los rieles para calibrar</p>
+                            <div class="rail-status">
+                                <span id="left-rail-status">⚪ Riel Izquierdo</span>
+                                <span id="right-rail-status">⚪ Riel Derecho</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gauge-input">
+                        <label for="gauge-input">Ancho de Trocha (mm):</label>
+                        <input type="number" id="gauge-input" value="1435" min="1000" max="2000">
+                    </div>
+                    <button class="btn btn-primary" id="calibrate-btn" disabled>
+                        Confirmar Calibración
+                    </button>
+                </div>
+
+                <div class="card" id="process-section" style="display: none;">
+                    <h2>⚙️ Procesamiento</h2>
+                    <button class="btn btn-success" id="process-btn">
+                        ▶️ Iniciar Procesamiento
+                    </button>
+                    <div class="progress-container" id="progress-container" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span id="progress-text">0%</span>
+                            <span id="fps-text">-- FPS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="results-section" style="display: none;">
+                    <h2>📊 Resultados</h2>
+                    <div class="results-buttons">
+                        <a class="btn btn-download" id="download-video-btn" href="#" download>
+                            📥 Descargar Video
+                        </a>
+                        <a class="btn btn-download" id="download-json-btn" href="#" download>
+                            📄 Descargar JSON
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Panel: Video Preview -->
+            <section class="panel panel-center">
+                <div class="card video-card">
+                    <h2>📺 Vista Previa</h2>
+                    <div class="video-container">
+                        <canvas id="preview-canvas"></canvas>
+                        <div class="video-overlay" id="video-overlay">
+                            <span class="status-badge" id="status-badge">ESPERANDO VIDEO</span>
+                        </div>
+                    </div>
+                    <div class="detection-info" id="detection-info">
+                        <div class="stat">
+                            <span class="stat-label">TTC</span>
+                            <span class="stat-value" id="ttc-value">--</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Objetos</span>
+                            <span class="stat-value" id="objects-value">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Riesgo</span>
+                            <span class="stat-value" id="risk-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: 3D View -->
+            <section class="panel panel-right">
+                <div class="card">
+                    <h2>🌐 Vista 3D</h2>
+                    <div id="three-container"></div>
+                    <div class="three-controls">
+                        <button class="btn btn-small" id="reset-camera-btn">🔄 Reset Cámara</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>📋 Tracking Log</h2>
+                    <div class="log-container" id="log-container">
+                        <div class="log-entry">Sistema listo</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <span>STAC-CAPS v0.1.0</span>
+            <span id="connection-status">🔴 Desconectado</span>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+    <script src="/static/three_scene.js"></script>
+</body>
+</html>

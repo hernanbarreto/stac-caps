@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="900" viewBox="0 0 1300 900">
+<defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.15"/>
+    </filter>
+   
+    <style>
+        /* FONTS */
+        text { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; fill: #212121; }
+        .title { font-weight: 800; font-size: 22px; fill: #ffffff; }
+        .subtitle { font-size: 14px; fill: #eceff1; }
+        .label { font-weight: 700; font-size: 14px; fill: #000; }
+        .detail { font-size: 11px; fill: #455a64; }
+        .model { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; font-weight: 600; fill: #e65100; }
+        .param { font-family: 'Consolas', 'Courier New', monospace; font-size: 10px; fill: #bf360c; }
+        
+        /* BOXES */
+        .box-main { fill: #fff3e0; stroke: #ef6c00; stroke-width: 3; filter: url(#shadow); rx: 12; }
+        .box-component { fill: #ffffff; stroke: #455a64; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        .box-depth { fill: #ffe0b2; stroke: #ef6c00; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-refine { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-calib { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        .box-cloud { fill: #e3f2fd; stroke: #1565c0; stroke-width: 2; filter: url(#shadow); rx: 8; }
+        
+        /* COMMON */
+        .arrow { stroke: #546e7a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+        .arrow-orange { stroke: #ef6c00; stroke-width: 2; fill: none; marker-end: url(#arrowhead-orange); }
+        .arrow-out { stroke: #1565c0; stroke-width: 3; fill: none; marker-end: url(#arrowhead-blue); }
+        
+        .badge { fill: #263238; rx: 4; }
+        .badge-new { fill: #7b1fa2; rx: 4; }
+        .badge-text { font-size: 9px; font-weight: 700; fill: #fff; font-family: 'Consolas', monospace; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#546e7a"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#ef6c00"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#1565c0"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#7b1fa2"/>
+    </marker>
+</defs>
+
+<!-- HEADER -->
+<rect x="0" y="0" width="1300" height="70" fill="#ef6c00"/>
+<text x="650" y="35" text-anchor="middle" class="title">ENGINE 1A: DEPTH (MONOCULAR 3D)</text>
+<text x="650" y="55" text-anchor="middle" class="subtitle">DepthAnything-v2 • Refinement Pipeline • Point Cloud • 25ms Budget</text>
+
+<!-- MAIN CONTAINER -->
+<rect id="engine_1a_container" x="30" y="85" width="1240" height="770" class="box-main"/>
+
+<!-- INPUT -->
+<g id="comp_input" transform="translate(50, 110)">
+    <rect x="0" y="0" width="180" height="100" class="box-component"/>
+    <text x="90" y="22" text-anchor="middle" class="label">FROM PRE-PROCESS</text>
+    <text x="90" y="45" text-anchor="middle" class="model">frame [H×W×3]</text>
+    <text x="90" y="62" text-anchor="middle" class="param">RGB, 1920×1080</text>
+    <text x="90" y="78" text-anchor="middle" class="param" style="fill:#7b1fa2">+ prev_depth</text>
+</g>
+
+<!-- ARROW: Input to Resize -->
+<line x1="230" y1="160" x2="280" y2="160" class="arrow-orange"/>
+
+<!-- RESIZE -->
+<g id="comp_resize" transform="translate(280, 115)">
+    <rect x="0" y="0" width="130" height="80" class="box-depth"/>
+    <text x="65" y="20" text-anchor="middle" class="label" fill="#ef6c00">RESIZE</text>
+    <text x="65" y="40" text-anchor="middle" class="model">→ 518×518</text>
+    <rect x="25" y="55" width="80" height="14" class="badge"/>
+    <text x="65" y="66" text-anchor="middle" class="badge-text">2 ms</text>
+</g>
+<line x1="410" y1="155" x2="450" y2="155" class="arrow-orange"/>
+
+<!-- DEPTHANYTHING-v2 -->
+<g id="comp_depth_model" transform="translate(450, 100)">
+    <rect x="0" y="0" width="280" height="170" class="box-depth"/>
+    <text x="140" y="25" text-anchor="middle" class="label" fill="#ef6c00">DepthAnything-v2</text>
+    
+    <g transform="translate(15, 40)">
+        <rect x="0" y="0" width="250" height="45" rx="4" fill="#ffe0b2" stroke="#ef6c00"/>
+        <text x="125" y="18" text-anchor="middle" class="model">ViT-L/14 Encoder</text>
+        <text x="125" y="35" text-anchor="middle" class="param">Railway finetuned + TensorRT</text>
+    </g>
+    
+    <g transform="translate(15, 95)">
+        <rect x="0" y="0" width="250" height="35" rx="4" fill="#fff" stroke="#ef6c00"/>
+        <text x="125" y="22" text-anchor="middle" class="model">Output: relative_depth</text>
+    </g>
+    
+    <rect x="100" y="145" width="80" height="18" class="badge"/>
+    <text x="140" y="158" text-anchor="middle" class="badge-text">18 ms</text>
+</g>
+
+<!-- ARROW down to refinement pipeline -->
+<path d="M 590 270 L 590 310" class="arrow-orange"/>
+
+<!-- CALIBRATION FROM LAYER 1 -->
+<g id="comp_calib_input" transform="translate(780, 105)">
+    <rect x="0" y="0" width="200" height="80" class="box-calib"/>
+    <text x="100" y="22" text-anchor="middle" class="label" fill="#2e7d32">LAYER 1</text>
+    <text x="100" y="45" text-anchor="middle" class="model">scale_factor</text>
+    <text x="100" y="62" text-anchor="middle" class="param">Rail: 1435mm gauge</text>
+</g>
+<path d="M 880 185 L 880 350 L 780 350" class="arrow" style="stroke:#2e7d32"/>
+
+<!-- METRIC SCALE -->
+<g transform="translate(450, 310)">
+    <rect x="0" y="0" width="280" height="70" class="box-calib"/>
+    <text x="140" y="20" text-anchor="middle" class="label" fill="#2e7d32">METRIC SCALE</text>
+    <text x="140" y="42" text-anchor="middle" class="model">depth_m = relative × scale</text>
+    <rect x="100" y="50" width="80" height="14" class="badge"/>
+    <text x="140" y="61" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+</g>
+<path d="M 590 380 L 590 420" class="arrow-orange"/>
+
+<!-- REFINEMENT PIPELINE (NEW) -->
+<g id="comp_refinement" transform="translate(350, 420)">
+    <rect x="0" y="0" width="480" height="180" class="box-refine"/>
+    <text x="240" y="22" text-anchor="middle" class="label" fill="#7b1fa2">REFINEMENT PIPELINE</text>
+    
+    <!-- Outlier Detection -->
+    <g transform="translate(15, 40)">
+        <rect x="0" y="0" width="140" height="80" rx="4" fill="#f3e5f5" stroke="#7b1fa2"/>
+        <text x="70" y="18" text-anchor="middle" class="label" style="font-size:10px" fill="#7b1fa2">Outlier Detect</text>
+        <text x="70" y="38" text-anchor="middle" class="param">Median filter 3×3</text>
+        <text x="70" y="52" text-anchor="middle" class="param">Threshold: 20%</text>
+        <rect x="30" y="62" width="80" height="12" class="badge"/>
+        <text x="70" y="71" text-anchor="middle" class="badge-text">&lt;1 ms</text>
+    </g>
+    
+    <!-- Guided Filter -->
+    <g transform="translate(170, 40)">
+        <rect x="0" y="0" width="140" height="80" rx="4" fill="#f3e5f5" stroke="#7b1fa2"/>
+        <text x="70" y="18" text-anchor="middle" class="label" style="font-size:10px" fill="#7b1fa2">Guided Filter</text>
+        <text x="70" y="38" text-anchor="middle" class="param">Edge-aware</text>
+        <text x="70" y="52" text-anchor="middle" class="param">r=2, ε=0.01</text>
+        <rect x="30" y="62" width="80" height="12" class="badge"/>
+        <text x="70" y="71" text-anchor="middle" class="badge-text">1 ms</text>
+    </g>
+    
+    <!-- Temporal Smoothing -->
+    <g transform="translate(325, 40)">
+        <rect x="0" y="0" width="140" height="80" rx="4" fill="#f3e5f5" stroke="#7b1fa2"/>
+        <text x="70" y="18" text-anchor="middle" class="label" style="font-size:10px" fill="#7b1fa2">Temporal EMA</text>
+        <text x="70" y="38" text-anchor="middle" class="param">α = 0.7</text>
+        <text x="70" y="52" text-anchor="middle" class="param">Motion compensated</text>
+        <rect x="30" y="62" width="80" height="12" class="badge"/>
+        <text x="70" y="71" text-anchor="middle" class="badge-text">1 ms</text>
+    </g>
+    
+    <!-- Arrows between refinement steps -->
+    <path d="M 155 80 L 170 80" fill="none" stroke="#7b1fa2" stroke-width="2"/>
+    <path d="M 310 80 L 325 80" fill="none" stroke="#7b1fa2" stroke-width="2"/>
+    
+    <text x="240" y="140" text-anchor="middle" class="detail" fill="#7b1fa2">refined_depth = EMA(guided(clean(raw_depth)))</text>
+    <rect x="180" y="155" width="120" height="18" class="badge-new"/>
+    <text x="240" y="168" text-anchor="middle" class="badge-text">Total: 3 ms</text>
+</g>
+
+<!-- ARROW to upscale -->
+<path d="M 590 600 L 590 640" class="arrow-orange"/>
+
+<!-- POINT CLOUD + CONFIDENCE -->
+<g transform="translate(350, 640)">
+    <rect x="0" y="0" width="480" height="120" class="box-cloud"/>
+    <text x="240" y="22" text-anchor="middle" class="label" fill="#1565c0">POINT CLOUD + CONFIDENCE</text>
+    
+    <g transform="translate(15, 40)">
+        <rect x="0" y="0" width="220" height="60" rx="4" fill="#bbdefb" stroke="#1565c0"/>
+        <text x="110" y="18" text-anchor="middle" class="model">inverse_projection(depth, K)</text>
+        <text x="110" y="38" text-anchor="middle" class="param">[H×W×3] XYZ per pixel</text>
+        <rect x="70" y="45" width="80" height="12" class="badge"/>
+        <text x="110" y="54" text-anchor="middle" class="badge-text">2 ms</text>
+    </g>
+    
+    <g transform="translate(250, 40)">
+        <rect x="0" y="0" width="215" height="60" rx="4" fill="#fff" stroke="#1565c0"/>
+        <text x="107" y="18" text-anchor="middle" class="model" style="fill:#7b1fa2">Enhanced Confidence</text>
+        <text x="107" y="35" text-anchor="middle" class="param" style="font-size:7px">Range(40%) + Texture(20%)</text>
+        <text x="107" y="48" text-anchor="middle" class="param" style="font-size:7px">Edge(20%) + Temporal(20%)</text>
+    </g>
+</g>
+
+<!-- OUTPUT -->
+<g id="comp_output" transform="translate(900, 400)">
+    <rect x="0" y="0" width="300" height="220" class="box-component" style="stroke:#1565c0;stroke-width:3"/>
+    <text x="150" y="25" text-anchor="middle" class="label" fill="#1565c0">TO ENGINE 1B</text>
+    
+    <g transform="translate(20, 45)">
+        <rect x="0" y="0" width="260" height="45" rx="4" fill="#e3f2fd" stroke="#1565c0"/>
+        <text x="130" y="18" text-anchor="middle" class="model">depth_map [H×W]</text>
+        <text x="130" y="35" text-anchor="middle" class="param">Refined, metric (meters)</text>
+    </g>
+    
+    <g transform="translate(20, 100)">
+        <rect x="0" y="0" width="260" height="45" rx="4" fill="#e3f2fd" stroke="#1565c0"/>
+        <text x="130" y="18" text-anchor="middle" class="model">point_cloud [H×W×3]</text>
+        <text x="130" y="35" text-anchor="middle" class="param">XYZ per pixel</text>
+    </g>
+    
+    <g transform="translate(20, 155)">
+        <rect x="0" y="0" width="260" height="45" rx="4" fill="#f3e5f5" stroke="#7b1fa2"/>
+        <text x="130" y="18" text-anchor="middle" class="model" style="fill:#7b1fa2">confidence [H×W]</text>
+        <text x="130" y="35" text-anchor="middle" class="param">Multi-factor enhanced</text>
+    </g>
+</g>
+
+<!-- ARROW to output -->
+<path d="M 830 510 L 900 510" class="arrow-out"/>
+
+<!-- LEGEND -->
+<g transform="translate(50, 790)">
+    <text x="0" y="15" class="label">COMPONENTS:</text>
+    <rect x="120" y="3" width="18" height="18" class="box-depth"/>
+    <text x="145" y="17" class="detail">Depth</text>
+    <rect x="190" y="3" width="18" height="18" class="box-refine"/>
+    <text x="215" y="17" class="detail">Refinement</text>
+    <rect x="280" y="3" width="18" height="18" class="box-calib"/>
+    <text x="305" y="17" class="detail">Calibration</text>
+    <rect x="370" y="3" width="18" height="18" class="box-cloud"/>
+    <text x="395" y="17" class="detail">Output</text>
+</g>
+
+<!-- TOTAL TIMING -->
+<g transform="translate(1050, 790)">
+    <rect x="0" y="0" width="180" height="50" rx="6" fill="#263238"/>
+    <text x="90" y="20" text-anchor="middle" class="badge-text" style="font-size:14px">TOTAL: 25 ms</text>
+    <text x="90" y="38" text-anchor="middle" class="badge-text" style="font-size:9px">2+18+3+2 ms</text>
+</g>
+
+</svg>

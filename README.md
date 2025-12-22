@@ -181,4 +181,4 @@ STAC_PORT=8080 python webapp/run.py
 
 ## 📜 Licencia
 
-STAC-CAPS © 2024 - Sistema de seguridad ferroviaria
+STAC-CAPS © 2025 - Sistema de seguridad ferroviaria

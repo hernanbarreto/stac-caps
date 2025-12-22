@@ -1,3 +1,6 @@
+# Documentation (private)
+documentacion/
+
 # Python
 __pycache__/
 *.py[cod]
